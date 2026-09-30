@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portofolio & Proyek | Inspirasitek</title>
+    
+    <!-- Google Fonts: Jost & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Custom Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Jost', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: '#2C221B',      
+                        terracotta: '#8A6B53', 
+                        sand: '#D4C7BA',       
+                        bone: '#F4F1ED'        
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-body text-dark antialiased bg-bone">
+
+    <!-- NAVBAR (Versi Teks Gelap untuk Latar Terang) -->
+    <nav class="fixed w-full z-50 bg-bone/90 backdrop-blur-md border-b border-sand/30">
+        <div class="max-w-7xl mx-auto px-6 sm:px-12 md:px-20 lg:px-24">
+            <div class="flex justify-between items-center h-24">
+                <a href="index.html" class="font-heading font-medium text-2xl tracking-wide text-dark">
+                    INSPIRASITEK
+                </a>
+                <div class="hidden md:flex space-x-10 items-center">
+                    <a href="index.html" class="text-sm font-medium uppercase tracking-widest text-dark/70 hover:text-terracotta transition-colors">Beranda</a>
+                    <a href="proyek.html" class="text-sm font-medium uppercase tracking-widest text-terracotta transition-colors">Portofolio</a>
+                    <a href="index.html#layanan" class="text-sm font-medium uppercase tracking-widest text-dark/70 hover:text-terracotta transition-colors">Layanan</a>
+                    <a href="index.html#kontak" class="px-6 py-2.5 border border-dark text-dark font-medium text-xs uppercase tracking-widest hover:bg-dark hover:text-bone transition-all duration-300">Hubungi Kami</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- PORTFOLIO HEADER -->
+    <section class="pt-40 pb-16 md:pt-48 md:pb-24 max-w-7xl mx-auto px-6 sm:px-12 md:px-20 lg:px-24">
+        <div class="max-w-3xl">
+            <span class="block text-terracotta uppercase tracking-[0.2em] text-xs sm:text-sm mb-4 font-heading font-medium">
+                Katalog Karya
+            </span>
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-heading font-light leading-tight text-dark mb-6">
+                Jejak Arsitektur,<br> <span class="font-medium">Merespons Alam.</span>
+            </h1>
+            <p class="text-base md:text-lg text-dark/70 font-light max-w-2xl leading-relaxed">
+                Menelusuri seluruh perjalanan desain Inspirasitek. Dari hunian pribadi yang intim hingga resor komersial berskala besar, setiap proyek adalah manifestasi dari harmoni modern minimalis dan jiwa tropis.
+            </p>
+        </div>
+    </section>
+
+    <!-- FILTER MENU -->
+    <section class="max-w-7xl mx-auto px-6 sm:px-12 md:px-20 lg:px-24 mb-12">
+        <div class="flex flex-wrap gap-6 border-b border-sand/40 pb-4">
+            <button class="text-sm font-medium uppercase tracking-widest text-terracotta border-b-2 border-terracotta pb-2 -mb-[18px]">Semua Proyek</button>
+            <button class="text-sm font-medium uppercase tracking-widest text-dark/50 hover:text-dark transition-colors pb-2">Hunian Pribadi</button>
+            <button class="text-sm font-medium uppercase tracking-widest text-dark/50 hover:text-dark transition-colors pb-2">Resor & Komersial</button>
+            <button class="text-sm font-medium uppercase tracking-widest text-dark/50 hover:text-dark transition-colors pb-2">Sedang Berjalan</button>
+        </div>
+    </section>
+
+    <!-- PROJECTS GRID (3 Columns) -->
+    <section class="max-w-7xl mx-auto px-6 sm:px-12 md:px-20 lg:px-24 pb-32">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+            
+            <!-- Proyek 1 -->
+            <a href="#" class="group block">
+                <div class="overflow-hidden bg-sand/20 mb-5 aspect-[4/5]">
+                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=800" alt="Villa Kamala" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-in-out">
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="font-heading text-xl font-medium text-dark group-hover:text-terracotta transition-colors">Villa Kamala</h3>
+                        <p class="font-body text-dark/60 text-sm mt-1">Seminyak — Selesai</p>
+                    </div>
+                    <span class="font-body text-xs text-dark/40 uppercase tracking-widest">2024</span>
+                </div>
+            </a>
+
+            <!-- Proyek 2 -->
+            <a href="#" class="group block">
+                <div class="overflow-hidden bg-sand/20 mb-5 aspect-[4/5]">
+                    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800" alt="Suara Retreat" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-in-out">
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="font-heading text-xl font-medium text-dark group-hover:text-terracotta transition-colors">Suara Retreat</h3>
+                        <p class="font-body text-dark/60 text-sm mt-1">Ubud — Selesai</p>
+                    </div>
+                    <span class="font-body text-xs text-dark/40 uppercase tracking-widest">2023</span>
+                </div>
+            </a>
+
+            <!-- Proyek 3 -->
+            <a href="#" class="group block">
+                <div class="overflow-hidden bg-sand/20 mb-5 aspect-[4/5]">
+                    <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=800" alt="Breeze Loft" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-in-out">
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="font-heading text-xl font-medium text-dark group-hover:text-terracotta transition-colors">Breeze Loft</h3>
+                        <p class="font-body text-dark/60 text-sm mt-1">Canggu — Selesai</p>
+                    </div>
+                    <span class="font-body text-xs text-dark/40 uppercase tracking-widest">2023</span>
+                </div>
+            </a>
+
+            <!-- Proyek 4 -->
+            <a href="#" class="group block">
+                <div class="overflow-hidden bg-sand/20 mb-5 aspect-[4/5]">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800" alt="The Cliff House" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-in-out">
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="font-heading text-xl font-medium text-dark group-hover:text-terracotta transition-colors">The Cliff House</h3>
+                        <p class="font-body text-dark/60 text-sm mt-1">Uluwatu — Selesai</p>
+                    </div>
+                    <span class="font-body text-xs text-dark/40 uppercase tracking-widest">2022</span>
+                </div>
+            </a>
+
+            <!-- Proyek 5 (Ongoing) -->
+            <a href="#" class="group block">
+                <div class="overflow-hidden bg-dark mb-5 aspect-[4/5] relative">
+                    <!-- Overlay label Ongoing -->
+                    <div class="absolute top-4 right-4 bg-terracotta text-bone text-xs font-medium uppercase tracking-widest px-3 py-1 z-10">
+                        Ongoing
+                    </div>
+                    <!-- Menggunakan gambar render atau konstruksi -->
+                    <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=800" alt="Niyata Residence" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-in-out opacity-90">
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="font-heading text-xl font-medium text-dark group-hover:text-terracotta transition-colors">Niyata Residence</h3>
+                        <p class="font-body text-dark/60 text-sm mt-1">Pererenan — Hunian Pribadi</p>
+                    </div>
+                    <span class="font-body text-xs text-dark/40 uppercase tracking-widest">2025</span>
+                </div>
+            </a>
+
+            <!-- Proyek 6 (Ongoing) -->
+            <a href="#" class="group block">
+                <div class="overflow-hidden bg-dark mb-5 aspect-[4/5] relative">
+                    <div class="absolute top-4 right-4 bg-terracotta text-bone text-xs font-medium uppercase tracking-widest px-3 py-1 z-10">
+                        Ongoing
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1613490908592-fd5e7399e742?auto=format&fit=crop&q=80&w=800" alt="Lumina Pavilion" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-in-out opacity-90">
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="font-heading text-xl font-medium text-dark group-hover:text-terracotta transition-colors">Lumina Pavilion</h3>
+                        <p class="font-body text-dark/60 text-sm mt-1">Sanur — Komersial</p>
+                    </div>
+                    <span class="font-body text-xs text-dark/40 uppercase tracking-widest">2025</span>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- FOOTER SIMPLE -->
+    <footer class="bg-dark text-bone py-12 border-t border-dark">
+        <div class="max-w-7xl mx-auto px-6 sm:px-12 md:px-20 lg:px-24 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="font-heading font-medium text-xl tracking-wide">INSPIRASITEK</div>
+            <p class="text-sm text-sand/60">© 2024 Inspirasitek Studio. Hak Cipta Dilindungi.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
