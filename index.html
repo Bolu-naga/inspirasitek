@@ -124,20 +124,20 @@
     </nav>
 
     <!-- HERO SECTION -->
-    <header id="hero" class="relative h-screen w-full flex items-center justify-center overflow-hidden">
+<header id="hero" class="relative h-screen w-full flex items-center justify-center overflow-hidden">
         <div class="carousel-bg active" style="background-image: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=1920')"></div>
         <div class="carousel-bg" style="background-image: url('https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=1920')"></div>
         <div class="carousel-bg" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1920')"></div>
         
         <div class="hero-overlay"></div>
         
-        <div class="relative z-10 w-full max-w-[1400px] mx-auto px-6 sm:px-12 text-center mt-12">
-            <h1 class="reveal-up delay-100 text-5xl sm:text-6xl md:text-8xl font-heading font-light uppercase text-white tracking-wide mb-4 drop-shadow-md">
-                Ruang <span class="font-medium">Waktu.</span>
+        <div class="relative z-10 w-full max-w-[1200px] mx-auto px-6 sm:px-12 text-center mt-12">
+            <span class="reveal-up block font-heading text-xs md:text-sm uppercase tracking-[0.3em] text-brandCream/80 mb-4">
+                Architectural Studio & Living
+            </span>
+            <h1 class="reveal-up text-4xl sm:text-6xl md:text-7xl font-heading font-light uppercase text-white tracking-wide mb-6 leading-tight">
+                Make your dream home come true with <span class="font-medium text-brandCream">architectural inspiration.</span>
             </h1>
-            <p class="reveal-up delay-200 text-sm md:text-lg text-white/90 font-light tracking-[0.3em] uppercase drop-shadow-md">
-                Modern Minimalist Architecture
-            </p>
         </div>
     </header>
 
@@ -324,10 +324,8 @@
         </div>
     </footer>
 
-    <!-- INTERAKTIVITAS / JAVASCRIPT -->
-    <!-- INTERAKTIVITAS / JAVASCRIPT -->
     <script>
-        // 1. Lenis Smooth Scroll Setup (Memberikan efek licin)
+        // 1. Lenis Smooth Scroll Setup
         const lenis = new Lenis({
             duration: 1.5,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
@@ -339,6 +337,23 @@
         }
         requestAnimationFrame(raf);
 
+        // Fix Bug Klik Tautan Navbar (Menggunakan Lenis scrollTo agar 100% mulus dan akurat)
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const targetId = link.getAttribute('href');
+                if (targetId.startsWith('#')) {
+                    e.preventDefault();
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        lenis.scrollTo(targetElement, {
+                            offset: 0,
+                            duration: 1.2
+                        });
+                    }
+                }
+            });
+        });
+
         // 2. Preloader & Opening Animasi
         window.addEventListener('load', () => {
             setTimeout(() => {
@@ -346,37 +361,37 @@
                 preloader.style.opacity = '0';
                 preloader.style.visibility = 'hidden';
                 
-                // Trigger animasi pada hero setelah preloader hilang
                 setTimeout(() => {
                     document.querySelectorAll('#hero .reveal-up').forEach(el => el.classList.add('active'));
                 }, 300);
-            }, 1200); // Tampil 1.2 detik lalu fade out
+            }, 1200); 
         });
 
-        // 3. Navbar Show/Hide On Scroll
+        // 3. Navbar Show/Hide Logic (Revisi: Saat baru masuk, navbar muncul dulu di hero)
         let lastScroll = 0;
         const navbar = document.getElementById('navbar');
         
         lenis.on('scroll', (e) => {
             const currentScroll = e.animatedScroll;
-            if (currentScroll > lastScroll && currentScroll > 80) {
-                navbar.classList.add('nav-hidden'); // Scroll down = hide
-            } else {
-                navbar.classList.remove('nav-hidden'); // Scroll up = show
+            const heroHeight = document.getElementById('hero').offsetHeight;
+
+            // Jika berada di dalam area Hero (Landing Page), navbar WAJIB MUNCUL
+            if (currentScroll < heroHeight * 0.7) {
+                navbar.classList.remove('nav-hidden');
+            } 
+            // Jika sudah melewati hero dan melakukan scroll ke bawah -> Sembunyikan
+            else if (currentScroll > lastScroll && currentScroll > 100) {
+                navbar.classList.add('nav-hidden');
+            } 
+            // Jika melakukan scroll ke atas -> Munculkan kembali
+            else if (currentScroll < lastScroll) {
+                navbar.classList.remove('nav-hidden');
             }
             
-            // Tambah background hitam tipis jika tidak di paling atas
-            if (currentScroll > 50) {
-                navbar.style.backgroundColor = 'rgba(0,0,0,0.4)';
-                // navbar.style.backdropFilter = 'blur(10px)';
-            } else {
-                navbar.style.backgroundColor = 'transparent';
-                navbar.style.backdropFilter = 'none';
-            }
             lastScroll = currentScroll;
         });
 
-        // 4. Hero Background Carousel (3 Detik)
+        // 4. Hero Background Carousel
         const bgImages = document.querySelectorAll('.carousel-bg');
         let currentBgIndex = 0;
         
@@ -386,7 +401,7 @@
             bgImages[currentBgIndex].classList.add('active');
         }, 3000);
 
-        // 5. Animasi Slide Up (Intersection Observer)
+        // 5. Animasi Slide Up saat Scroll
         const observerOptions = {
             root: null,
             rootMargin: '0px',
@@ -403,7 +418,6 @@
         }, observerOptions);
 
         document.querySelectorAll('.reveal-up').forEach(el => {
-            // Hero text sudah dianimasikan terpisah saat preloader selesai
             if (!el.closest('#hero')) {
                 revealObserver.observe(el);
             }
