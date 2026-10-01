@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inspirasitek | Architecture & Construction</title>
     
-    <!-- Google Fonts -->
+    <!-- Google Fonts Fallback & Inter for body -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Oswald:wght@300;400;500&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
     <!-- Lenis Smooth Scroll -->
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script>
     
-    <!-- Tailwind Custom Configuration -->
+    <!-- Custom CSS Configuration -->
     <script>
         tailwind.config = {
             theme: {
@@ -65,7 +65,7 @@
         .hero-overlay {
             position: absolute;
             inset: 0;
-            background: rgba(0, 0, 0, 0.45);
+            background: rgba(0, 0, 0, 0.4);
             z-index: 1;
         }
 
@@ -73,21 +73,19 @@
         .reveal-up {
             opacity: 0;
             transform: translateY(40px);
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .reveal-up.active {
             opacity: 1;
             transform: translateY(0);
         }
         
-        .navbar {
-        background-color: transparent;
-        position: absolute;
-        top: 0;
-        width: 100%;
-        z-index: 1000;
+        /* Navbar Transition (No Background) */
+        #navbar {
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            /* Memastikan navbar selalu transparan */
+            background-color: transparent !important; 
         }
-
         .nav-hidden {
             transform: translateY(-100%);
         }
@@ -97,12 +95,7 @@
             transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
         .portfolio-item:hover .portfolio-img {
-            transform: scale(1.05);
-        }
-        
-        /* Asymmetric Images in Services */
-        .img-offset-down {
-            transform: translateY(40px);
+            transform: scale(1.08);
         }
     </style>
 </head>
@@ -115,27 +108,23 @@
         </div>
     </div>
 
-<!-- NAVBAR -->
-    <nav id="navbar" class="fixed w-full z-50 top-0 py-8 transition-transform duration-500">
+    <!-- NAVBAR (Hidden at top & scroll down. Visible ONLY on scroll up) -->
+    <nav id="navbar" class="fixed w-full z-50 top-0 py-8 nav-hidden pointer-events-auto">
         <div class="max-w-[1400px] mx-auto px-6 sm:px-12 flex justify-between items-center">
-            
-                <a href="#hero" class="nav-link flex items-center">
-                    <img src="logo_inspirasitek2.png" 
-                        alt="Inspirasitek Logo" 
-                        class="h-20 w-auto object-contain brightness-0">
-                </a>
-
-            <div class="hidden md:flex space-x-10 items-center">
-                <a href="#hero" class="nav-link text-sm font-medium uppercase tracking-widest text-white hover:underline underline-offset-8 drop-shadow-md">Home</a>
-                <a href="#about" class="nav-link text-sm font-medium uppercase tracking-widest text-white hover:underline underline-offset-8 drop-shadow-md">About</a>
-                <a href="#services" class="nav-link text-sm font-medium uppercase tracking-widest text-white hover:underline underline-offset-8 drop-shadow-md">Services</a>
-                <a href="#portfolio" class="nav-link text-sm font-medium uppercase tracking-widest text-white hover:underline underline-offset-8 drop-shadow-md">Works</a>
+            <a href="#" class="font-heading font-medium text-2xl tracking-widest text-white uppercase drop-shadow-lg">
+                Inspirasitek
+            </a>
+            <div class="hidden md:flex space-x-12 items-center">
+                <a href="#hero" class="text-sm font-medium uppercase tracking-widest text-white hover:underline underline-offset-8 drop-shadow-md">Beranda</a>
+                <a href="#about" class="text-sm font-medium uppercase tracking-widest text-white hover:underline underline-offset-8 drop-shadow-md">Tentang</a>
+                <a href="#services" class="text-sm font-medium uppercase tracking-widest text-white hover:underline underline-offset-8 drop-shadow-md">Layanan</a>
+                <a href="#portfolio" class="text-sm font-medium uppercase tracking-widest text-white hover:underline underline-offset-8 drop-shadow-md">Karya</a>
             </div>
         </div>
     </nav>
 
     <!-- HERO SECTION -->
-    <header id="hero" class="relative h-screen w-full flex items-center justify-center overflow-hidden">
+<header id="hero" class="relative h-screen w-full flex items-center justify-center overflow-hidden">
         <div class="carousel-bg active" style="background-image: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=1920')"></div>
         <div class="carousel-bg" style="background-image: url('https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=1920')"></div>
         <div class="carousel-bg" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1920')"></div>
@@ -152,31 +141,31 @@
         </div>
     </header>
 
-    <!-- ABOUT US SECTION -->
-    <section id="about" class="py-32 md:py-48 w-full max-w-[1200px] mx-auto px-6 sm:px-12">
-        <div class="grid md:grid-cols-2 gap-16 md:gap-24 items-center">
-            <div class="reveal-up order-2 md:order-1">
-                <span class="block font-heading text-sm uppercase tracking-[0.2em] mb-4 text-brandSage font-medium">Our Philosophy</span>
-                <h2 class="text-5xl md:text-6xl font-heading font-light text-brandBrown leading-tight mb-8">
-                    Harmonizing <span class="font-medium">Form</span> and <span class="font-medium">Nature.</span>
+    <!-- TENTANG KAMI SECTION (Lebih Besar & Copywriting Ditambah) -->
+    <section id="about" class="py-32 md:py-48 w-full max-w-[1400px] mx-auto px-6 sm:px-12">
+        <div class="grid lg:grid-cols-12 gap-16 items-center">
+            <div class="lg:col-span-7 reveal-up pr-0 lg:pr-12">
+                <span class="block font-heading text-sm uppercase tracking-[0.3em] mb-6 text-brandSage font-medium">Filosofi Desain</span>
+                <h2 class="text-5xl md:text-7xl font-heading font-light text-brandBrown leading-[1.1] mb-10">
+                    Menyelaraskan <br/><span class="font-medium">Bentuk</span> dan <span class="font-medium">Alam.</span>
                 </h2>
-                
-                <div class="space-y-6 text-brandBrown/80 font-light leading-relaxed mb-10 text-lg">
+                <div class="space-y-6 text-brandBrown/80 font-light leading-relaxed text-lg md:text-xl max-w-2xl">
                     <p>
-                        Rooted in the appreciation of authentic materials and the serene tropical landscapes of Bali, Inspirasitek redefines luxury through quiet design. We believe that architecture is not merely about constructing structures, but about cultivating living spaces that breathe alongside their inhabitants.
+                        Inspirasitek lahir dari sebuah gagasan sederhana: kemewahan sejati tidak ditemukan dalam keramaian ornamen, melainkan dalam keheningan ruang dan proporsi yang sempurna.
                     </p>
                     <p>
-                        Our modern minimalist approach prioritizes honest functionality without compromising elegance. By stripping away non-essential ornamentation, we give center stage to natural light, optimal airflow, and precise craftsmanship. We deliver exclusive properties that remain timeless, tranquil, and enduring across generations.
+                        Berbasis di lanskap tropis yang kaya, kami merancang arsitektur modern minimalis yang menghormati tapak aslinya. Setiap garis yang kami tarik dan material yang kami pilih bertujuan untuk mengundang cahaya alami, merangkul sirkulasi udara bebas, dan menciptakan hunian yang bertumbuh seiring berjalannya waktu.
                     </p>
                 </div>
-                
-                <a href="#portfolio" class="nav-link inline-block font-heading text-lg border-b border-brandBrown pb-1 uppercase tracking-wider hover:text-brandSage hover:border-brandSage transition-colors">
-                    Explore Our Works
+                <a href="#portfolio" class="inline-block mt-12 font-heading text-xl border-b-2 border-brandBrown pb-1 uppercase tracking-widest hover:text-brandSage hover:border-brandSage transition-colors duration-300">
+                    Eksplorasi Karya Kami
                 </a>
             </div>
-            
-            <div class="reveal-up overflow-hidden order-1 md:order-2 mb-10 md:mb-0">
-                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800" alt="About Us" class="w-full h-auto aspect-[3/4] object-cover grayscale hover:grayscale-0 transition-all duration-700">
+            <div class="lg:col-span-5 reveal-up">
+                <!-- Gambar About diperbesar dan proporsional -->
+                <div class="aspect-[3/4] overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1000" alt="Tentang Kami Inspirasitek" class="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-1000 ease-in-out">
+                </div>
             </div>
         </div>
     </section>
@@ -231,101 +220,110 @@
         </div>
     </section>
 
-    <!-- PORTFOLIO SECTION -->
-    <section id="portfolio" class="bg-brandCream py-32 w-full px-6 sm:px-12">
-        <div class="max-w-[1200px] mx-auto">
-            <div class="mb-16 md:mb-20">
-                <h2 class="reveal-up text-4xl md:text-6xl font-heading font-light text-brandBrown uppercase">Selected <span class="font-medium">Works</span></h2>
+    <!-- PORTOFOLIO SECTION (Grid Terbatas, Proporsional UI/UX) -->
+    <section id="portfolio" class="bg-brandCream py-32 w-full">
+        <div class="max-w-[1400px] mx-auto px-6 sm:px-12 mb-16 flex flex-col md:flex-row md:items-end justify-between reveal-up">
+            <div>
+                <span class="block font-heading text-sm uppercase tracking-[0.3em] mb-4 text-brandSage font-medium">Selected Works</span>
+                <h2 class="text-4xl md:text-6xl font-heading font-light text-brandBrown uppercase">Arsip <span class="font-medium">Proyek.</span></h2>
+            </div>
+            <a href="project.html" class="hidden md:inline-block font-heading text-lg border-b border-brandBrown pb-1 uppercase tracking-widest hover:text-brandSage hover:border-brandSage transition-colors">
+                Lihat Semua Karya
+            </a>
+        </div>
+        
+        <!-- Grid: Terkungkung dalam container, margin dan ukuran foto yang proporsional -->
+        <div class="max-w-[1400px] mx-auto px-6 sm:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10 w-full reveal-up">
+                
+                <!-- Proyek 1 -->
+                <a href="project.html" class="portfolio-item group relative block overflow-hidden aspect-[4/5] bg-gray-200 w-full rounded-sm">
+                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=800" alt="Villa Kamala" class="portfolio-img absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="absolute bottom-6 left-6 right-6 z-10 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                        <h3 class="font-heading text-2xl md:text-3xl text-white font-medium uppercase tracking-wider drop-shadow-md">Villa Kamala</h3>
+                        <p class="font-body text-white/80 text-sm mt-1 font-light tracking-wide">Seminyak — Residential</p>
+                    </div>
+                </a>
+
+                <!-- Proyek 2 -->
+                <a href="project.html" class="portfolio-item group relative block overflow-hidden aspect-[4/5] bg-gray-200 w-full rounded-sm">
+                    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800" alt="Suara Retreat" class="portfolio-img absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="absolute bottom-6 left-6 right-6 z-10 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                        <h3 class="font-heading text-2xl md:text-3xl text-white font-medium uppercase tracking-wider drop-shadow-md">Suara Retreat</h3>
+                        <p class="font-body text-white/80 text-sm mt-1 font-light tracking-wide">Ubud — Commercial</p>
+                    </div>
+                </a>
+
+                <!-- Proyek 3 -->
+                <a href="project.html" class="portfolio-item group relative block overflow-hidden aspect-[4/5] bg-gray-200 w-full rounded-sm">
+                    <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=800" alt="Breeze Loft" class="portfolio-img absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="absolute bottom-6 left-6 right-6 z-10 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                        <h3 class="font-heading text-2xl md:text-3xl text-white font-medium uppercase tracking-wider drop-shadow-md">Breeze Loft</h3>
+                        <p class="font-body text-white/80 text-sm mt-1 font-light tracking-wide">Canggu — Residential</p>
+                    </div>
+                </a>
+                
+                <!-- Proyek 4 -->
+                <a href="project.html" class="portfolio-item group relative block overflow-hidden aspect-[4/5] bg-gray-200 w-full rounded-sm">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800" alt="The Cliff House" class="portfolio-img absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="absolute bottom-6 left-6 right-6 z-10 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                        <h3 class="font-heading text-2xl md:text-3xl text-white font-medium uppercase tracking-wider drop-shadow-md">The Cliff House</h3>
+                        <p class="font-body text-white/80 text-sm mt-1 font-light tracking-wide">Uluwatu — Residential</p>
+                    </div>
+                </a>
+
+                <!-- Proyek 5 -->
+                <a href="project.html" class="portfolio-item group relative block overflow-hidden aspect-[4/5] bg-gray-200 w-full rounded-sm">
+                    <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=800" alt="Niyata Residence" class="portfolio-img absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="absolute bottom-6 left-6 right-6 z-10 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                        <h3 class="font-heading text-2xl md:text-3xl text-white font-medium uppercase tracking-wider drop-shadow-md">Niyata Res.</h3>
+                        <p class="font-body text-white/80 text-sm mt-1 font-light tracking-wide">Pererenan — Residential</p>
+                    </div>
+                </a>
+
+                <!-- Proyek 6 -->
+                <a href="project.html" class="portfolio-item group relative block overflow-hidden aspect-[4/5] bg-gray-200 w-full rounded-sm">
+                    <img src="https://images.unsplash.com/photo-1613490908592-fd5e7399e742?auto=format&fit=crop&q=80&w=800" alt="Lumina Pavilion" class="portfolio-img absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="absolute bottom-6 left-6 right-6 z-10 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                        <h3 class="font-heading text-2xl md:text-3xl text-white font-medium uppercase tracking-wider drop-shadow-md">Lumina Pavilion</h3>
+                        <p class="font-body text-white/80 text-sm mt-1 font-light tracking-wide">Sanur — Commercial</p>
+                    </div>
+                </a>
+                
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 w-full reveal-up">
-                
-                <a href="full-project.html" class="portfolio-item group relative block overflow-hidden aspect-square md:aspect-[4/5] bg-gray-200 w-full shadow-lg">
-                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=800" alt="Villa Kamala" class="portfolio-img absolute inset-0 w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/50 transition-colors duration-500"></div>
-                    <div class="absolute bottom-6 left-6 right-6 z-10">
-                        <h3 class="font-heading text-2xl md:text-3xl text-white font-medium uppercase tracking-wide">Villa Kamala</h3>
-                        <p class="font-body text-white/80 text-xs md:text-sm mt-1 tracking-wider uppercase">Seminyak | Residential</p>
-                    </div>
+            <!-- Tombol Mobile All Works -->
+            <div class="mt-12 text-center md:hidden">
+                <a href="project.html" class="inline-block font-heading text-lg border-b border-brandBrown pb-1 uppercase tracking-widest hover:text-brandSage hover:border-brandSage transition-colors">
+                    Lihat Semua Karya
                 </a>
-
-                <a href="full-project.html" class="portfolio-item group relative block overflow-hidden aspect-square md:aspect-[4/5] bg-gray-200 w-full shadow-lg">
-                    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800" alt="Suara Retreat" class="portfolio-img absolute inset-0 w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/50 transition-colors duration-500"></div>
-                    <div class="absolute bottom-6 left-6 right-6 z-10">
-                        <h3 class="font-heading text-2xl md:text-3xl text-white font-medium uppercase tracking-wide">Suara Retreat</h3>
-                        <p class="font-body text-white/80 text-xs md:text-sm mt-1 tracking-wider uppercase">Ubud | Boutique Resort</p>
-                    </div>
-                </a>
-
-                <a href="full-project.html" class="portfolio-item group relative block overflow-hidden aspect-square md:aspect-[4/5] bg-gray-200 w-full shadow-lg">
-                    <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=800" alt="Breeze Loft" class="portfolio-img absolute inset-0 w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/50 transition-colors duration-500"></div>
-                    <div class="absolute bottom-6 left-6 right-6 z-10">
-                        <h3 class="font-heading text-2xl md:text-3xl text-white font-medium uppercase tracking-wide">Breeze Loft</h3>
-                        <p class="font-body text-white/80 text-xs md:text-sm mt-1 tracking-wider uppercase">Canggu | Commercial</p>
-                    </div>
-                </a>
-                
-                <a href="full-project.html" class="portfolio-item group relative block overflow-hidden aspect-square md:aspect-[4/5] bg-gray-200 w-full shadow-lg">
-                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800" alt="The Cliff House" class="portfolio-img absolute inset-0 w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/50 transition-colors duration-500"></div>
-                    <div class="absolute bottom-6 left-6 right-6 z-10">
-                        <h3 class="font-heading text-2xl md:text-3xl text-white font-medium uppercase tracking-wide">The Cliff</h3>
-                        <p class="font-body text-white/80 text-xs md:text-sm mt-1 tracking-wider uppercase">Uluwatu | Premium Villa</p>
-                    </div>
-                </a>
-
-                <a href="full-project.html" class="portfolio-item group relative block overflow-hidden aspect-square md:aspect-[4/5] bg-gray-200 w-full shadow-lg">
-                    <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=800" alt="Niyata Residence" class="portfolio-img absolute inset-0 w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/50 transition-colors duration-500"></div>
-                    <div class="absolute bottom-6 left-6 right-6 z-10">
-                        <h3 class="font-heading text-2xl md:text-3xl text-white font-medium uppercase tracking-wide">Niyata Res.</h3>
-                        <p class="font-body text-white/80 text-xs md:text-sm mt-1 tracking-wider uppercase">Pererenan | Residential</p>
-                    </div>
-                </a>
-
-                <a href="full-project.html" class="portfolio-item group relative block overflow-hidden aspect-square md:aspect-[4/5] bg-gray-200 w-full shadow-lg">
-                    <img src="https://images.unsplash.com/photo-1613490908592-fd5e7399e742?auto=format&fit=crop&q=80&w=800" alt="Lumina Pavilion" class="portfolio-img absolute inset-0 w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/50 transition-colors duration-500"></div>
-                    <div class="absolute bottom-6 left-6 right-6 z-10">
-                        <h3 class="font-heading text-2xl md:text-3xl text-white font-medium uppercase tracking-wide">Lumina</h3>
-                        <p class="font-body text-white/80 text-xs md:text-sm mt-1 tracking-wider uppercase">Sanur | Commercial</p>
-                    </div>
-                </a>
-                
             </div>
         </div>
     </section>
 
-<!-- CONTACT / FOOTER -->
+    <!-- KONTAK / FOOTER -->
     <footer id="contact" class="bg-brandBrown text-brandCream py-24 w-full">
-        <div class="max-w-[1200px] mx-auto px-6 sm:px-12 grid md:grid-cols-2 gap-16">
+        <div class="max-w-[1400px] mx-auto px-6 sm:px-12 grid md:grid-cols-2 gap-16">
             <div class="reveal-up">
-                <h2 class="font-heading text-4xl md:text-6xl font-light uppercase mb-6 text-white">Start Your<br>Project.</h2>
-                
-                <!-- Grup Tombol Footer -->
-                <div class="flex flex-col sm:flex-row gap-4 mt-8">
-                    <a href="mailto:info@inspirasitek.com" class="inline-flex items-center justify-center px-8 py-4 bg-brandSage text-white font-medium text-sm uppercase tracking-widest hover:bg-white hover:text-brandDark transition-colors duration-300">
-                        Contact Us
-                    </a>
-                    <a href="https://instagram.com/inspirasitek" target="_blank" class="inline-flex items-center justify-center px-8 py-4 border border-brandSage/50 text-white font-medium text-sm uppercase tracking-widest hover:border-brandSage hover:bg-brandSage/10 transition-colors duration-300">
-                        Instagram
-                    </a>
-                </div>
+                <h2 class="font-heading text-5xl md:text-6xl font-light uppercase mb-6 text-white leading-tight">Mulai<br>Proyek Anda.</h2>
+                <a href="mailto:info@inspirasitek.com" class="inline-block text-xl md:text-2xl font-light hover:text-brandSage transition-colors border-b border-brandSage/50 pb-1 tracking-wide">info@inspirasitek.com</a>
             </div>
-            
             <div class="reveal-up flex flex-col md:items-end justify-between">
-                <div class="mb-12 md:mb-0 md:text-right text-brandCream/70 mt-4 md:mt-0">
-                    <p class="mb-2 uppercase tracking-widest text-sm font-medium text-brandSage">Studio</p>
-                    <p class="font-light leading-relaxed">Jl. Raya Seminyak No. 99<br>Kuta, Bali, Indonesia</p>
+                <div class="mb-12 md:mb-0 md:text-right text-brandCream/70">
+                    <p class="mb-2 uppercase tracking-[0.2em] text-sm font-medium text-brandSage">Studio</p>
+                    <p class="font-light leading-relaxed text-lg">Jl. Raya Seminyak No. 99<br>Kuta, Bali, Indonesia</p>
                 </div>
-                <p class="text-sm text-brandCream/40 uppercase tracking-wider">&copy; 2026 Inspirasitek. All Rights Reserved.</p>
+                <p class="text-xs text-brandCream/40 uppercase tracking-widest">&copy; 2026 Inspirasitek. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
 
-    <!-- JAVASCRIPT -->
     <script>
         // 1. Lenis Smooth Scroll Setup
         const lenis = new Lenis({
@@ -339,11 +337,11 @@
         }
         requestAnimationFrame(raf);
 
-        // Fix Bug Klik Tautan Navbar
+        // Fix Bug Klik Tautan Navbar (Menggunakan Lenis scrollTo agar 100% mulus dan akurat)
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', (e) => {
                 const targetId = link.getAttribute('href');
-                if (targetId && targetId.startsWith('#')) {
+                if (targetId.startsWith('#')) {
                     e.preventDefault();
                     const targetElement = document.querySelector(targetId);
                     if (targetElement) {
@@ -369,7 +367,7 @@
             }, 1200); 
         });
 
-        // 3. Navbar Show/Hide Logic
+        // 3. Navbar Show/Hide Logic (Revisi: Saat baru masuk, navbar muncul dulu di hero)
         let lastScroll = 0;
         const navbar = document.getElementById('navbar');
         
@@ -377,12 +375,15 @@
             const currentScroll = e.animatedScroll;
             const heroHeight = document.getElementById('hero').offsetHeight;
 
+            // Jika berada di dalam area Hero (Landing Page), navbar WAJIB MUNCUL
             if (currentScroll < heroHeight * 0.7) {
                 navbar.classList.remove('nav-hidden');
             } 
+            // Jika sudah melewati hero dan melakukan scroll ke bawah -> Sembunyikan
             else if (currentScroll > lastScroll && currentScroll > 100) {
                 navbar.classList.add('nav-hidden');
             } 
+            // Jika melakukan scroll ke atas -> Munculkan kembali
             else if (currentScroll < lastScroll) {
                 navbar.classList.remove('nav-hidden');
             }
@@ -422,16 +423,5 @@
             }
         });
     </script>
-    <!-- STICKY WHATSAPP BUTTON -->
-    <a href="https://wa.me/6281234567890" target="_blank" class="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-[#25D366] text-white rounded-full shadow-2xl hover:scale-110 transition-transform duration-300 group">
-        <!-- Ikon WhatsApp SVG -->
-        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12.031 0C5.385 0 0 5.388 0 12.037c0 2.112.553 4.186 1.597 5.998L.1 23.996l6.113-1.603a12.034 12.034 0 005.818 1.498c6.645 0 12.032-5.388 12.032-12.037C24.063 5.388 18.676 0 12.031 0zm-.008 21.84c-1.785 0-3.535-.48-5.074-1.39l-.364-.216-3.77 1.002.997-3.676-.237-.376A9.972 9.972 0 012.062 12.03c0-5.513 4.488-10.005 10.001-10.005 5.515 0 10.003 4.492 10.003 10.005 0 5.512-4.488 10.004-10.003 10.004h-.032zm5.492-7.502c-.302-.151-1.784-.881-2.061-.98-.277-.1-.479-.151-.681.151-.2.302-.781.98-.957 1.18-.176.202-.353.227-.655.076-1.503-.761-2.73-1.637-3.79-3.411-.176-.302-.018-.465.133-.616.135-.135.303-.353.454-.53.151-.176.202-.301.302-.503.101-.202.051-.377-.025-.529-.076-.151-.681-1.637-.933-2.242-.246-.593-.496-.513-.681-.522-.176-.008-.378-.008-.58-.008-.202 0-.529.076-.807.378-.277.302-1.059 1.034-1.059 2.518 0 1.484 1.084 2.919 1.235 3.12.151.202 2.128 3.245 5.155 4.547.72.311 1.28.497 1.718.636.723.23 1.381.197 1.902.119.585-.088 1.784-.73 2.036-1.435.252-.705.252-1.31.176-1.436-.075-.126-.277-.202-.579-.353z"/>
-        </svg>
-        <!-- Teks Muncul Saat Di-Hover (Tooltip) -->
-        <span class="absolute right-16 bg-white text-brandDark text-xs font-medium px-3 py-1.5 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-md">
-            Chat with us
-        </span>
-    </a>
 </body>
 </html>
