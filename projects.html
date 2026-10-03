@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Works | Inspirasitek</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Oswald:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['"Aristotelica Pro Condensed"', 'Oswald', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brandBrown: '#4A2C11', 
+                        brandCream: '#F1E9D7', 
+                        brandSage: '#A8A375',  
+                        brandDark: '#2C2C2C'   
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Reveal Animations */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Navbar Transition */
+        #navbar {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .nav-hidden {
+            transform: translateY(-100%);
+        }
+
+        /* Modern Image Hover Effect */
+        .project-card {
+            overflow: hidden;
+        }
+        .project-img {
+            transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.5s ease;
+        }
+        .project-card:hover .project-img {
+            transform: scale(1.05);
+            filter: brightness(0.7);
+        }
+        .project-info {
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .project-card:hover .project-info {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="font-body text-brandBrown bg-brandCream antialiased overflow-x-hidden">
+
+<!-- NAVBAR -->
+    <nav id="navbar" class="fixed w-full z-50 top-0 py-8 transition-transform duration-500">
+        <div class="max-w-[1400px] mx-auto px-6 sm:px-12 flex justify-between items-center">
+            
+                <a href="#hero" class="nav-link flex items-center">
+                    <img src="assets/logo_inspirasitek.png" 
+                        alt="Inspirasitek Logo" 
+                        class="h-20 w-auto object-contain brightness-0">
+                </a>
+
+            <div class="hidden md:flex space-x-10 items-center">
+                <a href="#hero" class="nav-link text-sm font-medium uppercase tracking-widest text-white hover:underline underline-offset-8 drop-shadow-md">Home</a>
+                <a href="#about" class="nav-link text-sm font-medium uppercase tracking-widest text-white hover:underline underline-offset-8 drop-shadow-md">About</a>
+                <a href="#services" class="nav-link text-sm font-medium uppercase tracking-widest text-white hover:underline underline-offset-8 drop-shadow-md">Services</a>
+                <a href="#portfolio" class="nav-link text-sm font-medium uppercase tracking-widest text-white hover:underline underline-offset-8 drop-shadow-md">Works</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HEADER SECTION -->
+    <header class="pt-48 pb-20 w-full max-w-[1400px] mx-auto px-6 sm:px-12">
+        <span class="reveal-up block font-heading text-sm uppercase tracking-[0.2em] mb-4 text-brandSage font-medium">Selected Archives</span>
+        <h1 class="reveal-up text-5xl md:text-7xl font-heading font-light text-brandBrown uppercase tracking-wide leading-tight">
+            Explore <span class="font-medium">Our Works.</span>
+        </h1>
+        
+        <!-- Filter Modern Minimalis -->
+        <div class="reveal-up flex flex-wrap gap-8 mt-16 border-b border-brandBrown/20 pb-4">
+            <button class="text-sm font-medium uppercase tracking-widest text-brandBrown border-b-2 border-brandBrown pb-2 -mb-[18px]">All Projects</button>
+            <button class="text-sm font-medium uppercase tracking-widest text-brandBrown/40 hover:text-brandBrown transition-colors pb-2">Residential</button>
+            <button class="text-sm font-medium uppercase tracking-widest text-brandBrown/40 hover:text-brandBrown transition-colors pb-2">Commercial</button>
+            <button class="text-sm font-medium uppercase tracking-widest text-brandBrown/40 hover:text-brandBrown transition-colors pb-2">Ongoing</button>
+        </div>
+    </header>
+
+    <!-- MASONRY GRID PROJECTS -->
+    <section class="pb-32 w-full max-w-[1400px] mx-auto px-6 sm:px-12">
+        <!-- Menggunakan CSS Columns untuk efek Masonry -->
+        <div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+            
+            <!-- Project 1 (Link ke detail) -->
+            <a href="project-detail.html" class="project-card reveal-up relative block break-inside-avoid rounded-sm bg-brandDark">
+                <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=800" alt="Villa Kamala" class="project-img w-full h-auto object-cover opacity-90">
+                <div class="absolute inset-0 flex flex-col justify-end p-8 bg-gradient-to-t from-black/80 via-black/20 to-transparent">
+                    <div class="project-info">
+                        <span class="font-body text-white/70 text-xs tracking-[0.2em] uppercase mb-2 block">Seminyak — 2024</span>
+                        <h2 class="font-heading text-3xl md:text-4xl text-white font-medium uppercase tracking-wide">Villa Kamala</h2>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Project 2 (Gambar Portrait) -->
+            <a href="project-detail.html" class="project-card reveal-up relative block break-inside-avoid rounded-sm bg-brandDark">
+                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800" alt="Suara Retreat" class="project-img w-full h-[600px] object-cover opacity-90">
+                <div class="absolute inset-0 flex flex-col justify-end p-8 bg-gradient-to-t from-black/80 via-black/20 to-transparent">
+                    <div class="project-info">
+                        <span class="font-body text-white/70 text-xs tracking-[0.2em] uppercase mb-2 block">Ubud — 2023</span>
+                        <h2 class="font-heading text-3xl md:text-4xl text-white font-medium uppercase tracking-wide">Suara Retreat</h2>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Project 3 -->
+            <a href="project-detail.html" class="project-card reveal-up relative block break-inside-avoid rounded-sm bg-brandDark">
+                <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=800" alt="Breeze Loft" class="project-img w-full h-auto object-cover opacity-90">
+                <div class="absolute inset-0 flex flex-col justify-end p-8 bg-gradient-to-t from-black/80 via-black/20 to-transparent">
+                    <div class="project-info">
+                        <span class="font-body text-white/70 text-xs tracking-[0.2em] uppercase mb-2 block">Canggu — 2023</span>
+                        <h2 class="font-heading text-3xl md:text-4xl text-white font-medium uppercase tracking-wide">Breeze Loft</h2>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Tambahkan proyek lainnya dengan struktur yang sama -->
+             <a href="project-detail.html" class="project-card reveal-up relative block break-inside-avoid rounded-sm bg-brandDark">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800" alt="The Cliff" class="project-img w-full h-[500px] object-cover opacity-90">
+                <div class="absolute inset-0 flex flex-col justify-end p-8 bg-gradient-to-t from-black/80 via-black/20 to-transparent">
+                    <div class="project-info">
+                        <span class="font-body text-white/70 text-xs tracking-[0.2em] uppercase mb-2 block">Uluwatu — 2022</span>
+                        <h2 class="font-heading text-3xl md:text-4xl text-white font-medium uppercase tracking-wide">The Cliff House</h2>
+                    </div>
+                </div>
+            </a>
+            
+        </div>
+    </section>
+
+    <!-- FOOTER SIMPLE -->
+    <footer class="bg-brandBrown text-brandCream py-12 w-full">
+        <div class="max-w-[1400px] mx-auto px-6 sm:px-12 flex justify-between items-center">
+            <p class="font-heading text-xl uppercase tracking-widest">Inspirasitek</p>
+            <p class="text-xs uppercase tracking-widest text-brandCream/50">© 2026. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Lenis Smooth Scroll
+        const lenis = new Lenis({ duration: 1.5, smooth: true });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+
+        // Navbar Hide/Show
+        let lastScroll = 0;
+        const navbar = document.getElementById('navbar');
+        lenis.on('scroll', (e) => {
+            const currentScroll = e.animatedScroll;
+            if (currentScroll > lastScroll && currentScroll > 100) navbar.classList.add('nav-hidden');
+            else navbar.classList.remove('nav-hidden');
+            lastScroll = currentScroll;
+        });
+
+        // Reveal Animation
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal-up').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

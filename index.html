@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inspirasitek | Architecture & Construction</title>
+    <title>Inspirasitek | Architectural Studio & Living</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,7 +29,7 @@
                         brandBrown: '#4A2C11', 
                         brandCream: '#F1E9D7', 
                         brandSage: '#A8A375',  
-                        brandDark: '#2C2C2C'   
+                        brandDark: '#3A3A3A' 
                     }
                 }
             }
@@ -47,6 +47,35 @@
             align-items: center;
             justify-content: center;
             transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
+        }
+
+        /* ----------------------------------------------------
+           TEKSTUR ARSITEKTUR UNIK (Drafting Grid & Micro-Dots) 
+           ---------------------------------------------------- */
+        .arch-pattern {
+            position: relative;
+        }
+        .arch-pattern::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            /* Pola Jaring Cetak Biru dan Titik Mikro */
+            background-image: 
+                linear-gradient(currentColor 1px, transparent 1px),
+                linear-gradient(90deg, currentColor 1px, transparent 1px),
+                radial-gradient(currentColor 1px, transparent 1px);
+            background-size: 100px 100px, 100px 100px, 20px 20px;
+            background-position: -1px -1px, -1px -1px, -1px -1px;
+            opacity: 0.05; /* Tekstur sangat tipis & elegan */
+        }
+        .arch-pattern.dark-pattern::before {
+            opacity: 0.03; /* Lebih tipis untuk section gelap agar tidak berisik */
+        }
+        .arch-pattern > * {
+            position: relative;
+            z-index: 1;
         }
 
         /* Hero Carousel */
@@ -69,7 +98,7 @@
             z-index: 1;
         }
 
-        /* Reveal Animation (Slide Up) */
+        /* Reveal Animation Umum */
         .reveal-up {
             opacity: 0;
             transform: translateY(40px);
@@ -79,17 +108,29 @@
             opacity: 1;
             transform: translateY(0);
         }
-        
-        .navbar {
-        background-color: transparent;
-        position: absolute;
-        top: 0;
-        width: 100%;
-        z-index: 1000;
-        }
 
+        /* PPT-Style Scroll Reveal Khusus Services */
+        .service-item {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .service-item.service-active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Navbar Transition */
+        #navbar {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            background-color: transparent !important;
+            backdrop-filter: none !important;
+        }
         .nav-hidden {
             transform: translateY(-100%);
+        }
+        .nav-link {
+            transition: color 0.4s ease;
         }
 
         /* Portfolio Image Hover */
@@ -100,7 +141,7 @@
             transform: scale(1.05);
         }
         
-        /* Asymmetric Images in Services */
+        /* Asymmetric Images */
         .img-offset-down {
             transform: translateY(40px);
         }
@@ -111,31 +152,48 @@
     <!-- PRELOADER OPENING -->
     <div id="preloader">
         <div class="text-center flex flex-col items-center">
+                <img src="assets/logo_inspirasitek.png" alt="Inspirasitek Logo" class="h-100 w-100 object-contain brightness-0">
             <h1 class="font-heading text-5xl font-medium tracking-widest text-brandBrown uppercase">INSPIRASITEK</h1>
         </div>
     </div>
 
-<!-- NAVBAR -->
-    <nav id="navbar" class="fixed w-full z-50 top-0 py-8 transition-transform duration-500">
+    <!-- SMART NAVBAR -->
+    <nav id="navbar" class="fixed w-full z-50 top-0 py-6 md:py-8 transition-transform duration-500">
         <div class="max-w-[1400px] mx-auto px-6 sm:px-12 flex justify-between items-center">
             
-                <a href="#hero" class="nav-link flex items-center">
-                    <img src="logo_inspirasitek2.png" 
-                        alt="Inspirasitek Logo" 
-                        class="h-20 w-auto object-contain brightness-0">
-                </a>
+            <a href="#hero" class="flex items-center relative z-50 -ml-2 md:-ml-6">
+                <img id="nav-logo" src="assets/logo_inspirasitek.png" alt="Inspirasitek Logo" class="h-100 md:h-100 w-auto object-contain transition-all duration-500 drop-shadow-md" style="filter: brightness(0) invert(1);">
+            </a>
 
+            <!-- Desktop Menu -->
             <div class="hidden md:flex space-x-10 items-center">
                 <a href="#hero" class="nav-link text-sm font-medium uppercase tracking-widest text-white hover:underline underline-offset-8 drop-shadow-md">Home</a>
                 <a href="#about" class="nav-link text-sm font-medium uppercase tracking-widest text-white hover:underline underline-offset-8 drop-shadow-md">About</a>
                 <a href="#services" class="nav-link text-sm font-medium uppercase tracking-widest text-white hover:underline underline-offset-8 drop-shadow-md">Services</a>
                 <a href="#portfolio" class="nav-link text-sm font-medium uppercase tracking-widest text-white hover:underline underline-offset-8 drop-shadow-md">Works</a>
             </div>
+
+            <!-- Mobile Hamburger Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-white transition-colors duration-500 focus:outline-none relative z-50 drop-shadow-md">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path id="menu-icon" stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
         </div>
     </nav>
 
-    <!-- HERO SECTION -->
-    <header id="hero" class="relative h-screen w-full flex items-center justify-center overflow-hidden">
+    <!-- MOBILE MENU OVERLAY -->
+    <div id="mobile-menu" class="fixed inset-0 bg-brandDark/95 backdrop-blur-md z-40 flex flex-col justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="flex flex-col space-y-8 text-center">
+            <a href="#hero" class="mobile-nav-link font-heading text-4xl uppercase tracking-widest text-white hover:text-brandSage transition-colors">Home</a>
+            <a href="#about" class="mobile-nav-link font-heading text-4xl uppercase tracking-widest text-white hover:text-brandSage transition-colors">About</a>
+            <a href="#services" class="mobile-nav-link font-heading text-4xl uppercase tracking-widest text-white hover:text-brandSage transition-colors">Services</a>
+            <a href="#portfolio" class="mobile-nav-link font-heading text-4xl uppercase tracking-widest text-white hover:text-brandSage transition-colors">Works</a>
+        </div>
+    </div>
+
+    <!-- HERO SECTION (Theme: dark) -->
+    <header id="hero" data-theme="dark" class="relative h-screen w-full flex items-center justify-center overflow-hidden arch-pattern dark-pattern text-white">
         <div class="carousel-bg active" style="background-image: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=1920')"></div>
         <div class="carousel-bg" style="background-image: url('https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=1920')"></div>
         <div class="carousel-bg" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1920')"></div>
@@ -146,18 +204,18 @@
             <span class="reveal-up block font-heading text-xs md:text-sm uppercase tracking-[0.3em] text-brandCream/80 mb-4">
                 Architectural Studio & Living
             </span>
-            <h1 class="reveal-up text-4xl sm:text-6xl md:text-7xl font-heading font-light uppercase text-white tracking-wide mb-6 leading-tight">
+            <h1 class="reveal-up text-4xl sm:text-5xl md:text-7xl font-heading font-light uppercase tracking-wide mb-6 leading-tight">
                 Make your dream home come true with <span class="font-medium text-brandCream">architectural inspiration.</span>
             </h1>
         </div>
     </header>
 
-    <!-- ABOUT US SECTION -->
-    <section id="about" class="py-32 md:py-48 w-full max-w-[1200px] mx-auto px-6 sm:px-12">
-        <div class="grid md:grid-cols-2 gap-16 md:gap-24 items-center">
+    <!-- ABOUT US SECTION (Theme: light) -->
+    <section id="about" data-theme="light" class="py-32 md:py-48 w-full arch-pattern text-brandBrown">
+        <div class="max-w-[1200px] mx-auto px-6 sm:px-12 grid md:grid-cols-2 gap-16 md:gap-24 items-center">
             <div class="reveal-up order-2 md:order-1">
                 <span class="block font-heading text-sm uppercase tracking-[0.2em] mb-4 text-brandSage font-medium">Our Philosophy</span>
-                <h2 class="text-5xl md:text-6xl font-heading font-light text-brandBrown leading-tight mb-8">
+                <h2 class="text-5xl md:text-6xl font-heading font-light leading-tight mb-8">
                     Harmonizing <span class="font-medium">Form</span> and <span class="font-medium">Nature.</span>
                 </h2>
                 
@@ -176,63 +234,12 @@
             </div>
             
             <div class="reveal-up overflow-hidden order-1 md:order-2 mb-10 md:mb-0">
-                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800" alt="About Us" class="w-full h-auto aspect-[3/4] object-cover grayscale hover:grayscale-0 transition-all duration-700">
+                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800" alt="About Us" class="w-full h-auto aspect-[3/4] object-cover grayscale hover:grayscale-0 transition-all duration-700 shadow-xl">
             </div>
         </div>
     </section>
 
-    <!-- LAYANAN SECTION (Desain Modern Elegan Tanpa Sticky Clunky) -->
-    <section id="services" class="bg-brandDark text-white py-32 md:py-48 w-full">
-        <div class="max-w-[1400px] mx-auto px-6 sm:px-12">
-            
-            <div class="mb-20 md:mb-32 reveal-up">
-                <span class="block font-heading text-sm uppercase tracking-[0.3em] mb-4 text-white/50">Layanan Keahlian</span>
-                <h2 class="text-4xl md:text-6xl font-heading font-light uppercase">Pendekatan <span class="font-medium">Terintegrasi.</span></h2>
-            </div>
-
-            <!-- List Layanan Elegan -->
-            <div class="space-y-24 md:space-y-32">
-                
-                <!-- Service 1 -->
-                <div class="grid md:grid-cols-12 gap-8 md:gap-16 items-center reveal-up border-t border-white/10 pt-16">
-                    <div class="md:col-span-5 order-2 md:order-1 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&q=80&w=800" alt="Building Construction" class="w-full aspect-[4/3] object-cover hover:scale-105 transition-transform duration-1000">
-                    </div>
-                    <div class="md:col-span-7 order-1 md:order-2 flex flex-col md:pl-12">
-                        <span class="font-heading text-brandSage text-2xl md:text-4xl mb-4">01</span>
-                        <h3 class="font-heading text-4xl md:text-5xl font-light mb-6 uppercase tracking-wide">Building<br/>Construction</h3>
-                        <p class="text-white/60 font-light leading-relaxed text-lg max-w-xl">
-                            Dari struktur fondasi hingga hasil akhir yang presisi, tim internal kami mengawasi setiap tahap konstruksi. Kami memastikan rancangan arsitektur terealisasi dengan standar ketahanan yang tak tertandingi dan detail estetika yang tanpa kompromi.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Service 2 -->
-                <div class="grid md:grid-cols-12 gap-8 md:gap-16 items-center reveal-up border-t border-white/10 pt-16">
-                    <div class="md:col-span-7 order-1 md:order-1 flex flex-col md:pr-12 md:text-right md:items-end">
-                        <span class="font-heading text-brandSage text-2xl md:text-4xl mb-4">02</span>
-                        <h3 class="font-heading text-4xl md:text-5xl font-light mb-6 uppercase tracking-wide">Architecture<br/>Design</h3>
-                        <p class="text-white/60 font-light leading-relaxed text-lg max-w-xl md:text-right mb-6">
-                            Menghadirkan desain berbasis konteks yang merespons iklim dan lanskap sekitar. Fokus kami adalah menciptakan bentuk spasial yang fungsional, memancarkan ketenangan, dan tetap relevan meretas zaman.
-                        </p>
-                        <ul class="text-white/50 font-light text-sm uppercase tracking-widest flex flex-wrap gap-x-6 gap-y-2 md:justify-end">
-                            <li>Concept Design</li>
-                            <li>Technical Stage</li>
-                            <li>3D Visualisation</li>
-                            <li>Masterplaning</li>
-                        </ul>
-                    </div>
-                    <div class="md:col-span-5 order-2 md:order-2 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800" alt="Architecture Design" class="w-full aspect-[4/3] object-cover hover:scale-105 transition-transform duration-1000">
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- PORTFOLIO SECTION -->
-    <section id="portfolio" class="bg-brandCream py-32 w-full px-6 sm:px-12">
+    <section id="portfolio" data-theme="light" class="py-32 w-full arch-pattern text-brandBrown">
         <div class="max-w-[1200px] mx-auto">
             <div class="mb-16 md:mb-20">
                 <h2 class="reveal-up text-4xl md:text-6xl font-heading font-light text-brandBrown uppercase">Selected <span class="font-medium">Works</span></h2>
@@ -298,32 +305,208 @@
         </div>
     </section>
 
-<!-- CONTACT / FOOTER -->
-    <footer id="contact" class="bg-brandBrown text-brandCream py-24 w-full">
-        <div class="max-w-[1200px] mx-auto px-6 sm:px-12 grid md:grid-cols-2 gap-16">
-            <div class="reveal-up">
-                <h2 class="font-heading text-4xl md:text-6xl font-light uppercase mb-6 text-white">Start Your<br>Project.</h2>
+
+    <!-- SERVICES SECTION (Theme: dark) -->
+    <section id="services" data-theme="light" class="bg-brandCream text-brandBrown py-32 w-full arch-pattern dark-pattern">
+        <div class="max-w-[1200px] mx-auto px-6 sm:px-12">
+            <h2 class="reveal-up font-heading text-sm uppercase tracking-[0.2em] mb-12 md:mb-24 text-brandBrown/90">Our Services</h2>
+            
+            <!-- Mobile 2 Gambar -->
+            <div class="flex md:hidden gap-4 mb-16 reveal-up">
+                <div class="w-1/2 aspect-[3/4]">
+                    <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&q=80&w=600" alt="Interior Design" class="w-full h-full object-cover">
+                </div>
+                <div class="w-1/2 aspect-[3/4] mt-8">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=600" alt="Architecture Construction" class="w-full h-full object-cover">
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-16 md:gap-24 relative">
                 
-                <!-- Grup Tombol Footer -->
-                <div class="flex flex-col sm:flex-row gap-4 mt-8">
-                    <a href="mailto:info@inspirasitek.com" class="inline-flex items-center justify-center px-8 py-4 bg-brandSage text-white font-medium text-sm uppercase tracking-widest hover:bg-white hover:text-brandDark transition-colors duration-300">
-                        Contact Us
-                    </a>
-                    <a href="https://instagram.com/inspirasitek" target="_blank" class="inline-flex items-center justify-center px-8 py-4 border border-brandSage/50 text-white font-medium text-sm uppercase tracking-widest hover:border-brandSage hover:bg-brandSage/10 transition-colors duration-300">
-                        Instagram
-                    </a>
+                <!-- Desktop Gambar Sticky -->
+                <div class="w-full md:w-5/12 hidden md:block">
+                    <div class="sticky top-40 flex gap-4 md:gap-8 justify-start h-[60vh] items-center">
+                        <div class="w-1/2 rounded-sm overflow-hidden shadow-2xl h-full">
+                            <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&q=80&w=600" alt="Interior Design" class="w-full h-full object-cover">
+                        </div>
+                        <div class="w-1/2 rounded-sm overflow-hidden shadow-2xl h-full img-offset-down">
+                            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=600" alt="Architecture Construction" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-full md:w-7/12 flex flex-col gap-4 md:gap-2">
+                    
+                    <!-- 01 / RESIDENTIAL -->
+                    <!-- Atribut data-img menyimpan URL gambar yang akan dipanggil saat elemen ini di-scroll -->
+                    <div class="service-item service-text-block flex flex-col md:flex-row items-start gap-4 md:gap-8 md:border-t border-brandBrown/20 md:pt-16 md:pb-32" data-img="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=800">
+                        <span class="hidden md:block font-heading text-2xl md:text-3xl text-brandBrown/30 mt-1 w-8">01</span>
+                        <div class="w-full">
+                            <!-- Mobile Image Fallback -->
+                            <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=800" class="md:hidden w-full aspect-video object-cover mb-6 shadow-lg rounded-sm">
+                            <h3 class="font-heading text-3xl md:text-4xl font-light mb-6 uppercase leading-tight text-brandBrown">Residential</h3>
+                            <div class="ml-auto w-full">
+                                <p class="text-brandBrown font-medium text-sm tracking-wide mb-4 uppercase">House, Villa & Apartment Interior.</p>
+                                <ul class="text-brandBrown/70 font-light space-y-2 text-sm grid grid-cols-1 sm:grid-cols-2 gap-x-4">
+                                    <li>• Bedroom & Living Room</li>
+                                    <li>• Kitchen & Dining Area</li>
+                                    <li>• Custom Furniture</li>
+                                    <li>• Interior Renovation</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 02 / COMMERCIAL & HOSPITALITY -->
+                    <div class="service-item service-text-block flex flex-col md:flex-row items-start gap-4 md:gap-8 border-t border-brandBrown/20 pt-12 md:pt-16 md:pb-32" data-img="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800">
+                        <span class="hidden md:block font-heading text-2xl md:text-3xl text-brandBrown/30 mt-1 w-8">02</span>
+                        <div class="w-full">
+                            <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800" class="md:hidden w-full aspect-video object-cover mb-6 shadow-lg rounded-sm">
+                            <h3 class="font-heading text-3xl md:text-4xl font-light mb-6 uppercase leading-tight text-brandBrown">Commercial & Hospitality</h3>
+                            <div class="ml-auto w-full">
+                                <p class="text-brandBrown font-medium text-sm tracking-wide mb-4 uppercase">Cafés, Restaurants, Retail & Commercial Spaces</p>
+                                <ul class="text-brandBrown/70 font-light space-y-2 text-sm grid grid-cols-1 sm:grid-cols-2 gap-x-4">
+                                    <li>• Café & Restaurant Interior</li>
+                                    <li>• Retail & Boutique</li>
+                                    <li>• Office & Commercial Space</li>
+                                    <li>• Salon & Beauty Space</li>
+                                    <li>• Hospitality Interior</li>
+                                    <li>• Customer Flow & Space Planning</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 03 / INTERIOR DESIGN & BUILD -->
+                    <div class="service-item service-text-block flex flex-col md:flex-row items-start gap-4 md:gap-8 border-t border-brandBrown/20 pt-12 md:pt-16 md:pb-32" data-img="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=800">
+                        <span class="hidden md:block font-heading text-2xl md:text-3xl text-brandBrown/30 mt-1 w-8">03</span>
+                        <div class="w-full">
+                            <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=800" class="md:hidden w-full aspect-video object-cover mb-6 shadow-lg rounded-sm">
+                            <h3 class="font-heading text-3xl md:text-4xl font-light mb-6 uppercase leading-tight text-brandBrown">Interior Design & Build</h3>
+                            <div class="ml-auto w-full">
+                                <p class="text-brandBrown font-medium text-sm tracking-wide mb-4 uppercase">From Concept to Completion</p>
+                                <ul class="text-brandBrown/70 font-light space-y-2 text-sm grid grid-cols-1 sm:grid-cols-2 gap-x-4">
+                                    <li>• Concept & Interior Design</li>
+                                    <li>• Space Planning</li>
+                                    <li>• 3D Visualization</li>
+                                    <li>• Material & Color Selection</li>
+                                    <li>• Working Drawing</li>
+                                    <li>• Interior Construction</li>
+                                    <li>• Custom Furniture</li>
+                                    <li>• Electrical & Lighting</li>
+                                    <li>• Finishing & Installation</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 04 / CUSTOM FURNITURE -->
+                    <div class="service-item service-text-block flex flex-col md:flex-row items-start gap-4 md:gap-8 border-t border-brandBrown/20 pt-12 md:pt-16 md:pb-32" data-img="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&q=80&w=800">
+                        <span class="hidden md:block font-heading text-2xl md:text-3xl text-brandBrown/30 mt-1 w-8">04</span>
+                        <div class="w-full">
+                            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&q=80&w=800" class="md:hidden w-full aspect-video object-cover mb-6 shadow-lg rounded-sm">
+                            <h3 class="font-heading text-3xl md:text-4xl font-light mb-6 uppercase leading-tight text-brandBrown">Custom Furniture</h3>
+                            <div class="ml-auto w-full">
+                                <p class="text-brandBrown font-medium text-sm tracking-wide mb-4 uppercase">Furniture Designed for Your Space</p>
+                                <ul class="text-brandBrown/70 font-light space-y-2 text-sm grid grid-cols-1 sm:grid-cols-2 gap-x-4">
+                                    <li>• Built-in Furniture</li>
+                                    <li>• Kitchen Set</li>
+                                    <li>• Wardrobe</li>
+                                    <li>• TV Cabinet</li>
+                                    <li>• Display & Storage</li>
+                                    <li>• Custom Commercial Furniture</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 05 / BUILDING CONSTRUCTION -->
+                    <div class="service-item service-text-block flex flex-col md:flex-row items-start gap-4 md:gap-8 border-t border-brandBrown/20 pt-12 md:pt-16 md:pb-16" data-img="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800">
+                        <span class="hidden md:block font-heading text-2xl md:text-3xl text-brandBrown/30 mt-1 w-8">05</span>
+                        <div class="w-full">
+                            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800" class="md:hidden w-full aspect-video object-cover mb-6 shadow-lg rounded-sm">
+                            <h3 class="font-heading text-3xl md:text-4xl font-light mb-6 uppercase leading-tight text-brandBrown">Building Construction</h3>
+                            <div class="ml-auto w-full">
+                                <ul class="text-brandBrown/70 font-light space-y-2 text-sm flex flex-col gap-x-4">
+                                    <li>• Residential</li>
+                                    <li>• Commercial</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- CONTACT / FOOTER (Editorial Style) -->
+    <footer id="contact" data-theme="dark" class="bg-brandDark text-brandCream pt-32 pb-8 w-full arch-pattern dark-pattern relative">
+        <div class="max-w-[1400px] mx-auto px-6 sm:px-12">
+            
+            <!-- Main Footer Content -->
+            <div class="flex flex-col lg:flex-row justify-between items-start gap-20 lg:gap-12 mb-32 md:mb-48">
+                
+                <!-- Sisi Kiri: Pesan Penutup & Kontak -->
+                <div class="w-full lg:w-4/12 flex flex-col justify-between reveal-up h-full">
+                    <p class="font-light text-brandCream/80 text-lg md:text-xl max-w-sm mb-16 md:mb-32 leading-relaxed">
+                        Partner with us for an exceptional design journey, from initial vision to final construction.
+                    </p>
+                    
+                    <div class="space-y-4 font-light text-brandCream/90 text-sm md:text-base tracking-wide">
+                        <a href="https://wa.me/6281234567890" target="_blank" class="block hover:text-brandSage transition-colors duration-300">
+                            +62 812 3456 7890
+                        </a>
+                        <a href="mailto:info@inspirasitek.com" class="block hover:text-brandSage transition-colors duration-300">
+                            info@inspirasitek.com
+                        </a>
+                        <p class="pt-6 text-brandCream/60">
+                            Jl. Raya Seminyak No. 99<br>Kuta, Bali, Indonesia
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Sisi Kanan: Headline Besar & CTA Button -->
+                <div class="w-full lg:w-7/12 flex flex-col items-start reveal-up">
+                    <h2 class="font-heading text-6xl sm:text-7xl md:text-[6.5rem] lg:text-[7.5rem] font-light tracking-tight text-white leading-[1] mb-12 lg:mb-16">
+                        Start Your<br>Project.
+                    </h2>
+                    
+                    <div class="flex flex-wrap gap-4 w-full">
+                        <a href="mailto:info@inspirasitek.com" class="inline-flex items-center gap-3 px-8 py-4 bg-white text-brandDark font-medium text-xs tracking-[0.15em] uppercase hover:bg-brandSage hover:text-white transition-colors duration-300 rounded-full">
+                            Contact Us
+                            <!-- Ikon Panah Diagonal -->
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M7 17L17 7m0 0H8m9 0v9"/>
+                            </svg>
+                        </a>
+                        <a href="https://instagram.com/inspirasitek" target="_blank" class="inline-flex items-center gap-3 px-8 py-4 bg-transparent border border-white/30 text-white font-medium text-xs tracking-[0.15em] uppercase hover:border-white hover:bg-white/10 transition-colors duration-300 rounded-full">
+                            Instagram
+                            <!-- Ikon Panah Diagonal -->
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M7 17L17 7m0 0H8m9 0v9"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Bar: Copyright & Policy -->
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] sm:text-xs font-light text-brandCream/40 tracking-[0.2em] uppercase reveal-up">
+                <p>&copy; 2026 INSPIRASITEK STUDIO. ALL RIGHTS RESERVED.</p>
+                <div class="flex space-x-8">
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
                 </div>
             </div>
             
-            <div class="reveal-up flex flex-col md:items-end justify-between">
-                <div class="mb-12 md:mb-0 md:text-right text-brandCream/70 mt-4 md:mt-0">
-                    <p class="mb-2 uppercase tracking-widest text-sm font-medium text-brandSage">Studio</p>
-                    <p class="font-light leading-relaxed">Jl. Raya Seminyak No. 99<br>Kuta, Bali, Indonesia</p>
-                </div>
-                <p class="text-sm text-brandCream/40 uppercase tracking-wider">&copy; 2026 Inspirasitek. All Rights Reserved.</p>
-            </div>
         </div>
     </footer>
+
+    <!-- STICKY WHATSAPP BUTTON -->
+    <a href="https://wa.me/6281234567890" target="_blank" class="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-[#25D366] text-white rounded-full shadow-2xl hover:scale-110 transition-transform duration-300 group">
+        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12.031 0C5.385 0 0 5.388 0 12.037c0 2.112.553 4.186 1.597 5.998L.1 23.996l6.113-1.603a12.034 12.034 0 005.818 1.498c6.645 0 12.032-5.388 12.032-12.037C24.063 5.388 18.676 0 12.031 0zm-.008 21.84c-1.785 0-3.535-.48-5.074-1.39l-.364-.216-3.77 1.002.997-3.676-.237-.376A9.972 9.972 0 012.062 12.03c0-5.513 4.488-10.005 10.001-10.005 5.515 0 10.003 4.492 10.003 10.005 0 5.512-4.488 10.004-10.003 10.004h-.032zm5.492-7.502c-.302-.151-1.784-.881-2.061-.98-.277-.1-.479-.151-.681.151-.2.302-.781.98-.957 1.18-.176.202-.353.227-.655.076-1.503-.761-2.73-1.637-3.79-3.411-.176-.302-.018-.465.133-.616.135-.135.303-.353.454-.53.151-.176.202-.301.302-.503.101-.202.051-.377-.025-.529-.076-.151-.681-1.637-.933-2.242-.246-.593-.496-.513-.681-.522-.176-.008-.378-.008-.58-.008-.202 0-.529.076-.807.378-.277.302-1.059 1.034-1.059 2.518 0 1.484 1.084 2.919 1.235 3.12.151.202 2.128 3.245 5.155 4.547.72.311 1.28.497 1.718.636.723.23 1.381.197 1.902.119.585-.088 1.784-.73 2.036-1.435.252-.705.252-1.31.176-1.436-.075-.126-.277-.202-.579-.353z"/>
+        </svg>
+    </a>
 
     <!-- JAVASCRIPT -->
     <script>
@@ -339,24 +522,44 @@
         }
         requestAnimationFrame(raf);
 
-        // Fix Bug Klik Tautan Navbar
-        document.querySelectorAll('.nav-link').forEach(link => {
+        // Mobile Menu Logic
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        let isMobileMenuOpen = false;
+
+        function toggleMobileMenu() {
+            isMobileMenuOpen = !isMobileMenuOpen;
+            if (isMobileMenuOpen) {
+                mobileMenu.classList.remove('opacity-0', 'pointer-events-none');
+                menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12'); 
+            } else {
+                mobileMenu.classList.add('opacity-0', 'pointer-events-none');
+                menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16'); 
+            }
+        }
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+
+        // Fix Bug Klik Tautan Navbar 
+        document.querySelectorAll('.nav-link, .mobile-nav-link').forEach(link => {
             link.addEventListener('click', (e) => {
                 const targetId = link.getAttribute('href');
                 if (targetId && targetId.startsWith('#')) {
                     e.preventDefault();
+                    
+                    if (!mobileMenu.classList.contains('pointer-events-none')) {
+                        toggleMobileMenu();
+                    }
+
                     const targetElement = document.querySelector(targetId);
                     if (targetElement) {
-                        lenis.scrollTo(targetElement, {
-                            offset: 0,
-                            duration: 1.2
-                        });
+                        lenis.scrollTo(targetElement, { offset: 0, duration: 1.2 });
                     }
                 }
             });
         });
 
-        // 2. Preloader & Opening Animasi
+        // 2. Preloader
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const preloader = document.getElementById('preloader');
@@ -374,39 +577,69 @@
         const navbar = document.getElementById('navbar');
         
         lenis.on('scroll', (e) => {
+            if (isMobileMenuOpen) return; 
+
             const currentScroll = e.animatedScroll;
             const heroHeight = document.getElementById('hero').offsetHeight;
 
             if (currentScroll < heroHeight * 0.7) {
                 navbar.classList.remove('nav-hidden');
-            } 
-            else if (currentScroll > lastScroll && currentScroll > 100) {
+            } else if (currentScroll > lastScroll && currentScroll > 100) {
                 navbar.classList.add('nav-hidden');
-            } 
-            else if (currentScroll < lastScroll) {
+            } else if (currentScroll < lastScroll) {
                 navbar.classList.remove('nav-hidden');
             }
-            
             lastScroll = currentScroll;
         });
 
-        // 4. Hero Background Carousel
+        // 4. SMART NAVBAR (Ganti Warna Teks & Logo Berdasarkan Background Terang/Gelap)
+        const themeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const theme = entry.target.getAttribute('data-theme');
+                    const navLinks = document.querySelectorAll('.nav-link');
+                    const navLogo = document.getElementById('nav-logo');
+                    const menuBtn = document.getElementById('mobile-menu-btn');
+
+                    if (theme === 'light') {
+                        // Background terang -> Teks & Logo jadi Gelap
+                        navLinks.forEach(link => {
+                            link.classList.remove('text-white');
+                            link.classList.add('text-brandBrown');
+                        });
+                        navLogo.style.filter = 'brightness(0)'; // Logo hitam/cokelat
+                        menuBtn.classList.remove('text-white');
+                        menuBtn.classList.add('text-brandBrown');
+                    } else {
+                        // Background gelap -> Teks & Logo jadi Putih
+                        navLinks.forEach(link => {
+                            link.classList.remove('text-brandBrown');
+                            link.classList.add('text-white');
+                        });
+                        navLogo.style.filter = 'brightness(0) invert(1)'; // Logo putih
+                        menuBtn.classList.remove('text-brandBrown');
+                        menuBtn.classList.add('text-white');
+                    }
+                }
+            });
+        }, { rootMargin: '-10% 0px -85% 0px' }); // Memicu perubahan warna saat section baru menyentuh area 10% atas layar
+
+        document.querySelectorAll('section, header, footer').forEach(sec => {
+            if (sec.hasAttribute('data-theme')) {
+                themeObserver.observe(sec);
+            }
+        });
+
+        // 5. Hero Carousel
         const bgImages = document.querySelectorAll('.carousel-bg');
         let currentBgIndex = 0;
-        
         setInterval(() => {
             bgImages[currentBgIndex].classList.remove('active');
             currentBgIndex = (currentBgIndex + 1) % bgImages.length;
             bgImages[currentBgIndex].classList.add('active');
         }, 3000);
 
-        // 5. Animasi Slide Up saat Scroll
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.15
-        };
-
+        // 6. Animasi Slide Up (Umum)
         const revealObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -414,24 +647,25 @@
                     observer.unobserve(entry.target);
                 }
             });
-        }, observerOptions);
+        }, { root: null, rootMargin: '0px', threshold: 0.15 });
 
         document.querySelectorAll('.reveal-up').forEach(el => {
-            if (!el.closest('#hero')) {
-                revealObserver.observe(el);
-            }
+            if (!el.closest('#hero')) revealObserver.observe(el);
+        });
+
+        // 7. Animasi PPT-Style (Khusus Layanan)
+        const serviceObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('service-active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { root: null, rootMargin: '0px 0px -15% 0px', threshold: 0 }); 
+
+        document.querySelectorAll('.service-item').forEach(el => {
+            serviceObserver.observe(el);
         });
     </script>
-    <!-- STICKY WHATSAPP BUTTON -->
-    <a href="https://wa.me/6281234567890" target="_blank" class="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-[#25D366] text-white rounded-full shadow-2xl hover:scale-110 transition-transform duration-300 group">
-        <!-- Ikon WhatsApp SVG -->
-        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12.031 0C5.385 0 0 5.388 0 12.037c0 2.112.553 4.186 1.597 5.998L.1 23.996l6.113-1.603a12.034 12.034 0 005.818 1.498c6.645 0 12.032-5.388 12.032-12.037C24.063 5.388 18.676 0 12.031 0zm-.008 21.84c-1.785 0-3.535-.48-5.074-1.39l-.364-.216-3.77 1.002.997-3.676-.237-.376A9.972 9.972 0 012.062 12.03c0-5.513 4.488-10.005 10.001-10.005 5.515 0 10.003 4.492 10.003 10.005 0 5.512-4.488 10.004-10.003 10.004h-.032zm5.492-7.502c-.302-.151-1.784-.881-2.061-.98-.277-.1-.479-.151-.681.151-.2.302-.781.98-.957 1.18-.176.202-.353.227-.655.076-1.503-.761-2.73-1.637-3.79-3.411-.176-.302-.018-.465.133-.616.135-.135.303-.353.454-.53.151-.176.202-.301.302-.503.101-.202.051-.377-.025-.529-.076-.151-.681-1.637-.933-2.242-.246-.593-.496-.513-.681-.522-.176-.008-.378-.008-.58-.008-.202 0-.529.076-.807.378-.277.302-1.059 1.034-1.059 2.518 0 1.484 1.084 2.919 1.235 3.12.151.202 2.128 3.245 5.155 4.547.72.311 1.28.497 1.718.636.723.23 1.381.197 1.902.119.585-.088 1.784-.73 2.036-1.435.252-.705.252-1.31.176-1.436-.075-.126-.277-.202-.579-.353z"/>
-        </svg>
-        <!-- Teks Muncul Saat Di-Hover (Tooltip) -->
-        <span class="absolute right-16 bg-white text-brandDark text-xs font-medium px-3 py-1.5 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-md">
-            Chat with us
-        </span>
-    </a>
 </body>
 </html>

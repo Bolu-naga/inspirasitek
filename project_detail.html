@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Villa Kamala | Inspirasitek</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Oswald:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['"Aristotelica Pro Condensed"', 'Oswald', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brandBrown: '#4A2C11', 
+                        brandCream: '#F1E9D7', 
+                        brandSage: '#A8A375',  
+                        brandDark: '#2C2C2C'   
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Modern Clip-Path Reveal (Efek Tirai Mewah) */
+        .clip-reveal {
+            clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
+            transition: clip-path 1.5s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .clip-reveal.active {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        }
+
+        /* Basic Fade Up */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Navbar Transition */
+        #navbar {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .nav-hidden {
+            transform: translateY(-100%);
+        }
+
+        /* Parallax Image Fix */
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body class="font-body text-brandBrown bg-brandCream antialiased overflow-x-hidden">
+
+    <!-- NAVBAR -->
+    <nav id="navbar" class="fixed w-full z-50 top-0 py-8 transition-transform duration-500">
+        <div class="max-w-[1400px] mx-auto px-6 sm:px-12 flex justify-between items-center">
+            <a href="index.html" class="nav-link flex items-center">
+                <img src="logo_inspirasitek.png" alt="Inspirasitek Logo" class="h-8 md:h-10 w-auto object-contain brightness-0 invert drop-shadow-md">
+            </a>
+            <div class="hidden md:flex space-x-10 items-center">
+                <a href="index.html" class="nav-link text-sm font-medium uppercase tracking-widest text-white hover:underline underline-offset-8 drop-shadow-md">Home</a>
+                <a href="projects.html" class="nav-link text-sm font-medium uppercase tracking-widest text-white hover:underline underline-offset-8 drop-shadow-md">Back to Works</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- PARALLAX HERO SECTION -->
+    <header class="relative h-screen w-full flex items-end pb-24 parallax-bg" style="background-image: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=1920');">
+        <!-- Gradient Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-brandDark/90 via-black/20 to-black/30"></div>
+        
+        <div class="relative z-10 w-full max-w-[1200px] mx-auto px-6 sm:px-12">
+            <span class="reveal-up block font-heading text-sm uppercase tracking-[0.3em] text-brandCream mb-4">Seminyak, Bali</span>
+            <h1 class="reveal-up text-5xl md:text-8xl font-heading font-light uppercase text-white tracking-wide leading-none">
+                Villa <span class="font-medium">Kamala.</span>
+            </h1>
+        </div>
+    </header>
+
+    <!-- PROJECT INFO METADATA -->
+    <section class="py-20 border-b border-brandBrown/20 w-full max-w-[1200px] mx-auto px-6 sm:px-12">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="reveal-up">
+                <p class="text-xs uppercase tracking-widest text-brandBrown/50 mb-2 font-medium">Client</p>
+                <p class="font-heading text-xl uppercase tracking-wide">Private Investor</p>
+            </div>
+            <div class="reveal-up delay-100">
+                <p class="text-xs uppercase tracking-widest text-brandBrown/50 mb-2 font-medium">Category</p>
+                <p class="font-heading text-xl uppercase tracking-wide">Residential</p>
+            </div>
+            <div class="reveal-up delay-200">
+                <p class="text-xs uppercase tracking-widest text-brandBrown/50 mb-2 font-medium">Area</p>
+                <p class="font-heading text-xl uppercase tracking-wide">450 SQM</p>
+            </div>
+            <div class="reveal-up delay-300">
+                <p class="text-xs uppercase tracking-widest text-brandBrown/50 mb-2 font-medium">Year</p>
+                <p class="font-heading text-xl uppercase tracking-wide">2024</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJECT DESCRIPTION -->
+    <section class="py-32 w-full max-w-[1000px] mx-auto px-6 sm:px-12 text-center">
+        <h2 class="reveal-up text-2xl md:text-4xl font-light text-brandBrown leading-relaxed">
+            "Villa Kamala is a sanctuary of calm. We designed it to capture the essence of tropical living through a modern, minimalist lens—where boundaries between indoor and outdoor seamlessly dissolve."
+        </h2>
+    </section>
+
+    <!-- GALLERY DENGAN EFEK CLIP-PATH REVEAL -->
+    <section class="pb-32 w-full max-w-[1400px] mx-auto px-6 sm:px-12">
+        <!-- Full Width Image -->
+        <div class="clip-reveal w-full h-[60vh] md:h-[80vh] mb-8 bg-brandBrown">
+            <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&q=80&w=1920" alt="Interior Villa" class="w-full h-full object-cover">
+        </div>
+        
+        <!-- 50/50 Split Images -->
+        <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <div class="clip-reveal h-[50vh] md:h-[70vh] bg-brandBrown">
+                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800" alt="Detail 1" class="w-full h-full object-cover">
+            </div>
+            <div class="clip-reveal h-[50vh] md:h-[70vh] bg-brandBrown mt-0 md:mt-24"> <!-- Asymmetric offset -->
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800" alt="Detail 2" class="w-full h-full object-cover">
+            </div>
+        </div>
+    </section>
+
+    <!-- NEXT PROJECT (Massive Footer Link) -->
+    <a href="#" class="group block w-full bg-brandDark text-center py-32 md:py-48 transition-colors hover:bg-brandBrown">
+        <span class="block text-white/50 text-xs uppercase tracking-[0.3em] font-medium mb-6 transition-transform group-hover:-translate-y-2">Next Project</span>
+        <h2 class="text-5xl md:text-8xl font-heading font-light text-white uppercase tracking-wide transition-transform group-hover:scale-105 duration-700">
+            Suara Retreat.
+        </h2>
+    </a>
+
+    <script>
+        // Lenis Smooth Scroll
+        const lenis = new Lenis({ duration: 1.5, smooth: true });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+
+        // Navbar Hide/Show
+        let lastScroll = 0;
+        const navbar = document.getElementById('navbar');
+        lenis.on('scroll', (e) => {
+            const currentScroll = e.animatedScroll;
+            if (currentScroll > lastScroll && currentScroll > 100) navbar.classList.add('nav-hidden');
+            else navbar.classList.remove('nav-hidden');
+            lastScroll = currentScroll;
+        });
+
+        // Intersection Observer for Animations (Reveal Up & Clip Path)
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.reveal-up, .clip-reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
