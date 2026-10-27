@@ -145,107 +145,76 @@
         </h1>
 
         <!-- FILTER CATEGORIES -->
-        <div class="reveal-up flex flex-wrap gap-8 font-heading text-sm md:text-base tracking-[0.15em] uppercase border-b border-brandBrown/20 pb-4">
-            <a href="#" class="text-brandBrown font-medium border-b-2 border-brandBrown pb-4 -mb-[17px]">All Projects</a>
-            <a href="#" class="text-brandBrown/50 hover:text-brandBrown transition-colors pb-4">Residential</a>
-            <a href="#" class="text-brandBrown/50 hover:text-brandBrown transition-colors pb-4">Commercial</a>
-            <a href="#" class="text-brandBrown/50 hover:text-brandBrown transition-colors pb-4">Ongoing</a>
+        <div id="portfolio-filters" class="reveal-up flex flex-wrap gap-8 font-heading text-sm md:text-base tracking-[0.15em] uppercase border-b border-brandBrown/20 pb-4">
+            <button data-filter="all" class="filter-btn text-brandBrown font-medium border-b-2 border-brandBrown pb-4 -mb-[17px] uppercase tracking-[0.15em]">All Projects</button>
+            <button data-filter="residential" class="filter-btn text-brandBrown/50 hover:text-brandBrown transition-colors pb-4 uppercase tracking-[0.15em]">Residential</button>
+            <button data-filter="commercial" class="filter-btn text-brandBrown/50 hover:text-brandBrown transition-colors pb-4 uppercase tracking-[0.15em]">Commercial</button>
+            <button data-filter="ongoing" class="filter-btn text-brandBrown/50 hover:text-brandBrown transition-colors pb-4 uppercase tracking-[0.15em]">Ongoing</button>
         </div>
     </header>
 
-    <!-- ASYMMETRICAL PORTFOLIO GRID -->
-    <!-- Menggunakan grid 12 kolom di desktop untuk layout asimetris, dan 1 kolom di mobile agar aman -->
-    <section class="pb-32 w-full max-w-[1400px] mx-auto px-6 sm:px-12 relative z-10">
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-y-16 md:gap-x-8 lg:gap-x-12 mt-12">
+<!-- SMART ZIG-ZAG PORTFOLIO GRID -->
+    <section class="pb-32 w-full max-w-[1200px] mx-auto px-6 sm:px-12 relative z-10">
+        
+        <div id="portfolio-grid" class="grid grid-cols-1 md:grid-cols-2 gap-y-20 md:gap-y-32 md:gap-x-12 lg:gap-x-20 items-center mt-12">
             
-            <!-- PROJECT 1: Besar di kiri -->
-            <div class="reveal-up md:col-span-7">
-                <a href="CT_Home.html" class="project-card block w-full aspect-[4/3] bg-gray-200 shadow-xl rounded-sm">
-                    <img src="assets/ct_home/CT_1.png" alt="Project 1" class="project-img w-full h-full object-cover">
-                    <!-- Overlay Muncul saat Hover -->
-                    <div class="project-overlay absolute inset-0 bg-brandBrown/60 flex flex-col justify-end p-8">
-                        <h3 class="font-heading text-3xl text-white font-medium uppercase tracking-wide">CT's Home</h3>
-                        <p class="font-body text-white/80 text-sm mt-2 tracking-wider uppercase">Seminyak | Residential</p>
-                    </div>
-                </a>
-                <!-- Judul Muncul di Bawah Foto pada Mobile -->
-                <div class="md:hidden mt-4">
-                    <h3 class="font-heading text-2xl text-brandBrown uppercase">CT's Home</h3>
-                    <p class="text-brandSage text-xs tracking-widest uppercase">Residential</p>
-                </div>
-            </div>
+            <!-- Generate 16 Projects (Atribut class aspect akan diatur otomatis oleh JS) -->
+            <!-- Proyek 1 sampai 16 -->
+            <script>
+                // Ini hanya trik HTML rendering sederhana agar kode tidak terlalu panjang di editor Anda.
+                // Anda bisa menghapus script ini dan melakukan copy-paste manual jika ingin mengedit satu per satu.
+                const projectsData = [
+                    { title: "CT's Home", cat: "residential", loc: "Ubud", img: "assets/ct_home/CT_1.png" },
+                    { title: "The Canopy", cat: "hospitality", loc: "Jimbaran", img: "" }, 
+                    { title: "Grand Pavilion", cat: "commercial", loc: "Uluwatu", img: "" },
+                    { title: "Villa Kamala", cat: "residential", loc: "Seminyak", img: "" },
+                    { title: "Breeze Loft", cat: "commercial", loc: "Canggu", img: "" },
+                    { title: "Suara Retreat", cat: "ongoing", loc: "Ubud", img: "" },
+                    { title: "The Cliff", cat: "residential", loc: "Uluwatu", img: "" },
+                    { title: "Niyata Res.", cat: "residential", loc: "Pererenan", img: "" },
+                    { title: "Lumina Pavilion", cat: "commercial", loc: "Sanur", img: "" },
+                    { title: "Project Sepuluh", cat: "ongoing", loc: "Denpasar", img: "" },
+                    { title: "Project Sebelas", cat: "residential", loc: "Canggu", img: "" },
+                    { title: "Project Dua Belas", cat: "commercial", loc: "Kuta", img: "" },
+                    { title: "Project Tiga Belas", cat: "residential", loc: "Ubud", img: "" },
+                    { title: "Project Empat Belas", cat: "ongoing", loc: "Tabanan", img: "" },
+                    { title: "Project Lima Belas", cat: "commercial", loc: "Seminyak", img: "" },
+                    { title: "Project Enam Belas", cat: "residential", loc: "Uluwatu", img: "" }
+                ];
 
-            <!-- PROJECT 2: Sedang di kanan, agak turun (margin-top di desktop) -->
-            <div class="reveal-up md:col-span-5 md:mt-32">
-                <a href="#" class="project-card block w-full aspect-square bg-gray-200 shadow-xl rounded-sm">
-                    <img src="assets/portfolio_2.jpg" alt="Project 2" class="project-img w-full h-full object-cover">
-                    <div class="project-overlay absolute inset-0 bg-brandBrown/60 flex flex-col justify-end p-8">
-                        <h3 class="font-heading text-3xl text-white font-medium uppercase tracking-wide">Breeze Loft</h3>
-                        <p class="font-body text-white/80 text-sm mt-2 tracking-wider uppercase">Canggu | Commercial</p>
-                    </div>
-                </a>
-                <div class="md:hidden mt-4">
-                    <h3 class="font-heading text-2xl text-brandBrown uppercase">Breeze Loft</h3>
-                    <p class="text-brandSage text-xs tracking-widest uppercase">Commercial</p>
-                </div>
-            </div>
-
-            <!-- PROJECT 3: Tinggi di kiri, estetik ruang kosong di sebelahnya -->
-            <div class="reveal-up md:col-span-5 md:mt-16">
-                <a href="#" class="project-card block w-full aspect-[3/4] bg-gray-200 shadow-xl rounded-sm">
-                    <img src="assets/portfolio_3.jpg" alt="Project 3" class="project-img w-full h-full object-cover">
-                    <div class="project-overlay absolute inset-0 bg-brandBrown/60 flex flex-col justify-end p-8">
-                        <h3 class="font-heading text-3xl text-white font-medium uppercase tracking-wide">Suara Retreat</h3>
-                        <p class="font-body text-white/80 text-sm mt-2 tracking-wider uppercase">Ubud | Boutique Resort</p>
-                    </div>
-                </a>
-                <div class="md:hidden mt-4">
-                    <h3 class="font-heading text-2xl text-brandBrown uppercase">Suara Retreat</h3>
-                    <p class="text-brandSage text-xs tracking-widest uppercase">Boutique Resort</p>
-                </div>
-            </div>
-
-            <!-- PROJECT 4: Besar di kanan, ditarik ke atas (margin negatif) memotong ruang kosong -->
-            <div class="reveal-up md:col-span-7 md:-mt-24">
-                <a href="#" class="project-card block w-full aspect-video bg-gray-200 shadow-xl rounded-sm">
-                    <img src="assets/ct_home/CT_4.png" alt="Project 4" class="project-img w-full h-full object-cover">
-                    <div class="project-overlay absolute inset-0 bg-brandBrown/60 flex flex-col justify-end p-8">
-                        <h3 class="font-heading text-3xl text-white font-medium uppercase tracking-wide">Nusa Dua Estate</h3>
-                        <p class="font-body text-white/80 text-sm mt-2 tracking-wider uppercase">Nusa Dua | Residential</p>
-                    </div>
-                </a>
-                <div class="md:hidden mt-4">
-                    <h3 class="font-heading text-2xl text-brandBrown uppercase">Nusa Dua Estate</h3>
-                    <p class="text-brandSage text-xs tracking-widest uppercase">Residential</p>
-                </div>
-            </div>
-
-            <!-- PROJECT 5: Full Panorama di tengah -->
-            <div class="reveal-up md:col-span-10 md:col-start-2 md:mt-32">
-                <a href="#" class="project-card block w-full aspect-[21/9] bg-gray-200 shadow-xl rounded-sm">
-                    <img src="assets/ct_home/CT_2.png" alt="Project 5" class="project-img w-full h-full object-cover">
-                    <div class="project-overlay absolute inset-0 bg-brandBrown/60 flex flex-col justify-end p-8 text-center items-center">
-                        <h3 class="font-heading text-3xl md:text-4xl text-white font-medium uppercase tracking-wide">The Canopy</h3>
-                        <p class="font-body text-white/80 text-sm mt-2 tracking-wider uppercase">Jimbaran | Hospitality</p>
-                    </div>
-                </a>
-                <div class="md:hidden mt-4">
-                    <h3 class="font-heading text-2xl text-brandBrown uppercase">The Canopy</h3>
-                    <p class="text-brandSage text-xs tracking-widest uppercase">Hospitality</p>
-                </div>
-            </div>
-
+                projectsData.forEach((p, index) => {
+                    const imgTag = p.img ? `<img src="${p.img}" alt="${p.title}" class="project-img absolute inset-0 w-full h-full object-cover z-10">` 
+                                         : `<img src="" alt="${p.title}" class="project-img absolute inset-0 w-full h-full object-cover z-10 opacity-0">`;
+                    
+                    document.write(`
+                        <div class="project-item w-full" data-category="${p.cat}">
+                            <a href="project_detail.html" class="project-card block w-full shadow-xl rounded-sm group relative bg-brandBrown/5 flex items-center justify-center transition-all duration-700">
+                                <span class="absolute font-heading text-brandBrown/30 tracking-widest uppercase text-sm">Image Archive</span>
+                                ${imgTag}
+                                <div class="hidden md:flex project-overlay absolute inset-0 bg-brandBrown/70 flex-col justify-end p-8 z-20">
+                                    <h3 class="font-heading text-3xl text-white font-medium uppercase tracking-wide">${p.title}</h3>
+                                    <p class="font-body text-white/80 text-sm mt-2 tracking-wider uppercase">${p.loc} | ${p.cat}</p>
+                                </div>
+                            </a>
+                            <div class="md:hidden mt-5">
+                                <h3 class="font-heading text-2xl text-brandBrown uppercase">${p.title}</h3>
+                                <p class="text-brandSage text-xs tracking-widest uppercase mt-1">${p.loc} | ${p.cat}</p>
+                            </div>
+                        </div>
+                    `);
+                });
+            </script>
         </div>
         
         <!-- Load More Button -->
-        <div class="reveal-up flex justify-center mt-24 md:mt-32">
-            <a href="#" class="inline-flex items-center gap-3 px-10 py-4 bg-brandBrown text-brandCream font-medium text-xs tracking-[0.2em] uppercase hover:bg-brandSage hover:text-white transition-colors duration-300 rounded-full shadow-lg">
+        <div class="flex justify-center mt-24 md:mt-32 border-t border-brandBrown/20 pt-16">
+            <button id="load-more-btn" class="inline-flex items-center gap-3 px-10 py-4 bg-brandBrown text-brandCream font-medium text-xs tracking-[0.2em] uppercase hover:bg-brandSage hover:text-white transition-colors duration-300 rounded-full shadow-lg">
                 Load More Archives
-            </a>
+            </button>
         </div>
     </section>
 
-    <!-- FOOTER (Sama seperti Home) -->
+    <!-- FOOTER  -->
     <footer class="bg-brandDark text-brandCream pt-32 pb-8 w-full relative z-10">
         <div class="max-w-[1400px] mx-auto px-6 sm:px-12">
             <div class="flex flex-col lg:flex-row justify-between items-start gap-20 lg:gap-12 mb-32 md:mb-48">
@@ -335,6 +304,99 @@
         }, { rootMargin: '0px', threshold: 0.1 });
         
         document.querySelectorAll('.reveal-up').forEach(el => revealObserver.observe(el));
+
+        // 5. SMART PORTFOLIO FILTER & LOAD MORE LOGIC
+        const projectItems = Array.from(document.querySelectorAll('.project-item'));
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const loadMoreBtn = document.getElementById('load-more-btn');
+        
+        let currentFilter = 'all';
+        let itemsToShow = 6; // Jumlah awal yang ditampilkan
+        const itemsToLoad = 6; // Jumlah yang bertambah saat klik Load More
+
+        function renderProjects() {
+            // Saring proyek berdasarkan kategori
+            const filtered = projectItems.filter(item => 
+                currentFilter === 'all' || item.getAttribute('data-category') === currentFilter
+            );
+
+            // Sembunyikan semua proyek terlebih dahulu
+            projectItems.forEach(item => {
+                item.style.display = 'none';
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+            });
+
+            // Tampilkan proyek yang sesuai filter, dan berikan animasi
+            let visibleCount = 0;
+            filtered.forEach((item, index) => {
+                if (index < itemsToShow) {
+                    item.style.display = 'block';
+                    
+                    // Logic Smart Grid: Otomatis atur rasio gambar agar zig-zag tidak rusak!
+                    const card = item.querySelector('.project-card');
+                    card.classList.remove('aspect-[4/3]', 'aspect-square');
+                    
+                    // Pola A-B B-A: Index 0,3,4,7 jadi 4:3. Index 1,2,5,6 jadi 1:1.
+                    if (index % 4 === 0 || index % 4 === 3) {
+                        card.classList.add('aspect-[4/3]');
+                    } else {
+                        card.classList.add('aspect-square');
+                    }
+
+                    // Efek Fade In perlahan
+                    setTimeout(() => {
+                        item.style.transition = 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateY(0)';
+                    }, 50 * index);
+                    
+                    visibleCount++;
+                }
+            });
+
+            // Sembunyikan tombol Load More jika semua proyek sudah tampil
+            if (visibleCount >= filtered.length) {
+                loadMoreBtn.style.display = 'none';
+            } else {
+                loadMoreBtn.style.display = 'inline-flex';
+            }
+        }
+
+        // Event Listener untuk Tombol Kategori
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Ubah gaya tombol aktif
+                filterBtns.forEach(b => {
+                    b.classList.remove('text-brandBrown', 'border-b-2', 'border-brandBrown', 'pb-4', '-mb-[17px]');
+                    b.classList.add('text-brandBrown/50', 'pb-4');
+                });
+                btn.classList.remove('text-brandBrown/50');
+                btn.classList.add('text-brandBrown', 'border-b-2', 'border-brandBrown', 'pb-4', '-mb-[17px]');
+
+                // Terapkan filter dan reset tampilan kembali ke 6
+                currentFilter = btn.getAttribute('data-filter');
+                itemsToShow = 6;
+                renderProjects();
+                
+                // Scroll sedikit ke atas agar grid terlihat rapi
+                lenis.scrollTo('#portfolio-filters', { offset: -100, duration: 1 });
+            });
+        });
+
+        // Event Listener untuk Tombol Load More
+        loadMoreBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            itemsToShow += itemsToLoad;
+            renderProjects();
+        });
+
+        // Jalankan saat pertama kali halaman dibuka
+        window.addEventListener('DOMContentLoaded', () => {
+            renderProjects();
+        });
     </script>
 </body>
 </html>
