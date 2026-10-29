@@ -29,7 +29,7 @@
                         brandBrown: '#4A2C11', 
                         brandCream: '#F1E9D7', 
                         brandSage: '#A8A375',  
-                        brandDark: '#3A3A3A' 
+                        brandDark: '#333333' 
                     }
                 }
             }
@@ -37,122 +37,74 @@
     </script>
 
     <style>
-        /* Preloader */
+        /* ================= ANIMASI OPENING (SPLIT REVEAL) ================= */
         #preloader {
-            position: fixed;
-            inset: 0;
-            background-color: #F1E9D7;
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
+            position: fixed; inset: 0; z-index: 9999; display: flex; pointer-events: none;
         }
+        .split-panel {
+            flex: 1; background-color: #F1E9D7; height: 100vh;
+            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .preloader-logo {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            transition: opacity 0.4s ease, transform 0.8s ease; z-index: 10000;
+        }
+        body.loaded .split-panel.left { transform: translateX(-100%); }
+        body.loaded .split-panel.right { transform: translateX(100%); }
+        body.loaded .preloader-logo { opacity: 0; transform: translate(-50%, -60%); }
 
-        /* ----------------------------------------------------
-           TEKSTUR ARSITEKTUR UNIK (Drafting Grid & Micro-Dots) 
-           ---------------------------------------------------- */
-        .arch-pattern {
-            position: relative;
-        }
+        /* ================= TEKSTUR ARSITEKTUR ================= */
+        .arch-pattern { position: relative; }
         .arch-pattern::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            /* Pola Jaring Cetak Biru dan Titik Mikro */
+            content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
             background-image: 
                 linear-gradient(currentColor 1px, transparent 1px),
                 linear-gradient(90deg, currentColor 1px, transparent 1px),
                 radial-gradient(currentColor 1px, transparent 1px);
             background-size: 100px 100px, 100px 100px, 20px 20px;
             background-position: -1px -1px, -1px -1px, -1px -1px;
-            opacity: 0.05; /* Tekstur sangat tipis & elegan */
+            opacity: 0.05; 
         }
-        .arch-pattern.dark-pattern::before {
-            opacity: 0.03; /* Lebih tipis untuk section gelap agar tidak berisik */
-        }
-        .arch-pattern > * {
-            position: relative;
-            z-index: 1;
-        }
+        .arch-pattern.dark-pattern::before { opacity: 0.03; }
+        .arch-pattern > * { position: relative; z-index: 1; }
 
-        /* Hero Carousel */
-        .carousel-bg {
-            position: absolute;
-            inset: 0;
-            background-size: cover;
-            background-position: center;
-            opacity: 0;
-            transition: opacity 1.5s ease-in-out;
-            z-index: 0;
+        /* ================= CAROUSEL & ANIMASI ================= */
+        .carousel-slide {
+            position: absolute; inset: 0; opacity: 0; pointer-events: none; transition: opacity 1.2s ease; z-index: 0;
         }
-        .carousel-bg.active {
-            opacity: 1;
+        .carousel-slide.active { opacity: 1; pointer-events: auto; }
+        .carousel-img {
+            width: 100%; height: 100%; object-fit: cover; transform: scale(1.05); transition: transform 6s ease-out;
         }
-        .hero-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.45);
-            z-index: 1;
-        }
+        .carousel-slide.active .carousel-img { transform: scale(1); }
 
-        /* Reveal Animation Umum */
-        .reveal-up {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .reveal-up.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        /* Ascend Animations */
+        .ascend-right { opacity: 0; transform: translate(-40px, 40px); transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+        .ascend-right.active { opacity: 1; transform: translate(0, 0); }
+        .ascend-left { opacity: 0; transform: translate(40px, 40px); transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+        .ascend-left.active { opacity: 1; transform: translate(0, 0); }
+        .ascend-up { opacity: 0; transform: translateY(40px); transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+        .ascend-up.active { opacity: 1; transform: translateY(0); }
 
-        /* PPT-Style Scroll Reveal Khusus Services */
-        .service-item {
-            opacity: 0;
-            transform: translateY(50px);
-            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        .service-item.service-active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        /* Navbar Transition */
-        #navbar {
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            background-color: transparent !important;
-            backdrop-filter: none !important;
-        }
-        .nav-hidden {
-            transform: translateY(-100%);
-        }
-        .nav-link {
-            transition: color 0.4s ease;
-        }
+        /* Square Wipe */
+        .square-wipe { clip-path: inset(100% 0 0 0); transition: clip-path 1.2s cubic-bezier(0.77, 0, 0.175, 1); }
+        .square-wipe.active { clip-path: inset(0 0 0 0); }
 
-        /* Portfolio Image Hover */
-        .portfolio-img {
-            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        .portfolio-item:hover .portfolio-img {
-            transform: scale(1.05);
-        }
-        
-        /* Asymmetric Images */
-        .img-offset-down {
-            transform: translateY(40px);
-        }
+        /* Navbar & Utilities */
+        #navbar { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); background-color: transparent !important; }
+        .nav-hidden { transform: translateY(-100%); }
+        .nav-link { transition: color 0.4s ease; }
+        .portfolio-item:hover .portfolio-img { transform: scale(1.05); transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .portfolio-img { transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
     </style>
 </head>
 <body class="font-body text-brandBrown bg-brandCream antialiased overflow-x-hidden">
 
-    <!-- PRELOADER OPENING -->
+    <!-- PRELOADER (SPLIT REVEAL) -->
     <div id="preloader">
-        <div class="text-center flex flex-col items-center">
-                <img src="assets/logo_inspirasitek.png" alt="Inspirasitek Logo" class="h-100 w-100 object-contain brightness-0">
+        <div class="split-panel left"></div>
+        <div class="split-panel right"></div>
+        <div class="preloader-logo text-center">
             <h1 class="font-heading text-5xl font-medium tracking-widest text-brandBrown uppercase">INSPIRASITEK</h1>
         </div>
     </div>
@@ -160,24 +112,17 @@
     <!-- SMART NAVBAR -->
     <nav id="navbar" class="fixed w-full z-50 top-0 py-6 md:py-8 transition-transform duration-500">
         <div class="max-w-[1400px] mx-auto px-6 sm:px-12 flex justify-between items-center">
-            
-            <a href="#hero" class="flex items-center relative z-50 -ml-2 md:-ml-6">
-                <img id="nav-logo" src="assets/logo_inspirasitek.png" alt="Inspirasitek Logo" class="h-100 md:h-100 w-auto object-contain transition-all duration-500 drop-shadow-md" style="filter: brightness(0) invert(1);">
+            <a href="index.html" class="flex items-center relative z-50 -ml-2 md:-ml-6">
+                <img id="nav-logo" src="logo_inspirasitek.png" alt="Inspirasitek Logo" class="h-8 md:h-10 w-auto object-contain transition-all duration-500 drop-shadow-md" style="filter: brightness(0) invert(1);">
             </a>
-
-            <!-- Desktop Menu -->
             <div class="hidden md:flex space-x-10 items-center">
                 <a href="#hero" class="nav-link text-sm font-medium uppercase tracking-widest text-white hover:underline underline-offset-8 drop-shadow-md">Home</a>
                 <a href="#about" class="nav-link text-sm font-medium uppercase tracking-widest text-white hover:underline underline-offset-8 drop-shadow-md">About</a>
-                <a href="#services" class="nav-link text-sm font-medium uppercase tracking-widest text-white hover:underline underline-offset-8 drop-shadow-md">Services</a>
                 <a href="#portfolio" class="nav-link text-sm font-medium uppercase tracking-widest text-white hover:underline underline-offset-8 drop-shadow-md">Works</a>
+                <a href="#services" class="nav-link text-sm font-medium uppercase tracking-widest text-white hover:underline underline-offset-8 drop-shadow-md">Services</a>
             </div>
-
-            <!-- Mobile Hamburger Button -->
             <button id="mobile-menu-btn" class="md:hidden text-white transition-colors duration-500 focus:outline-none relative z-50 drop-shadow-md">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path id="menu-icon" stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path id="menu-icon" stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path></svg>
             </button>
         </div>
     </nav>
@@ -187,79 +132,91 @@
         <div class="flex flex-col space-y-8 text-center">
             <a href="#hero" class="mobile-nav-link font-heading text-4xl uppercase tracking-widest text-white hover:text-brandSage transition-colors">Home</a>
             <a href="#about" class="mobile-nav-link font-heading text-4xl uppercase tracking-widest text-white hover:text-brandSage transition-colors">About</a>
-            <a href="#services" class="mobile-nav-link font-heading text-4xl uppercase tracking-widest text-white hover:text-brandSage transition-colors">Services</a>
             <a href="#portfolio" class="mobile-nav-link font-heading text-4xl uppercase tracking-widest text-white hover:text-brandSage transition-colors">Works</a>
+            <a href="#services" class="mobile-nav-link font-heading text-4xl uppercase tracking-widest text-white hover:text-brandSage transition-colors">Services</a>
         </div>
     </div>
 
-    <!-- HERO SECTION (Theme: dark) -->
-    <header id="hero" data-theme="dark" class="relative h-screen w-full flex items-center justify-center overflow-hidden arch-pattern dark-pattern text-white">
-        <div class="carousel-bg active" style="background-image: url(assets/ct_home/CT_1.png)"></div>
-        <div class="carousel-bg" style="background-image: url('https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=1920')"></div>
-        <div class="carousel-bg" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1920')"></div>
+    <!-- HERO CAROUSEL SECTION -->
+    <header id="hero" data-theme="dark" class="relative h-screen w-full overflow-hidden bg-brandDark arch-pattern dark-pattern">
         
-        <div class="hero-overlay"></div>
+        <!-- Background Slides -->
+        <div class="carousel-slide active"><img src="assets/ct_home/CT_1.png" class="carousel-img" alt="Slide 1"></div>
+        <div class="carousel-slide"><img src="assets/ct_home/CT_2.png" class="carousel-img" alt="Slide 2"></div>
+        <div class="carousel-slide"><img src="assets/ct_home/CT_3.png" class="carousel-img" alt="Slide 3"></div>
         
-        <div class="relative z-10 w-full max-w-[1200px] mx-auto px-6 sm:px-12 text-center mt-12">
-            <span class="reveal-up block font-heading text-xs md:text-sm uppercase tracking-[0.3em] text-brandCream/80 mb-4">
-                Architectural Studio & Living
-            </span>
-            <h1 class="reveal-up text-4xl sm:text-5xl md:text-7xl font-heading font-light uppercase tracking-wide mb-6 leading-tight">
-                Make your dream home come true with <span class="font-medium text-brandCream">architectural inspiration.</span>
-            </h1>
+        <div class="absolute inset-0 bg-gradient-to-t from-brandDark/90 via-black/20 to-black/30 z-10"></div>
+        
+        <!-- Teks Statis di Tengah -->
+        <div class="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+            <div class="w-full max-w-[1200px] mx-auto px-6 sm:px-12 text-center mt-12">
+                <span class="ascend-up block font-heading text-xs md:text-sm uppercase tracking-[0.3em] text-brandCream/80 mb-4">
+                    Architectural Studio & Living
+                </span>
+                <h1 class="ascend-up text-4xl sm:text-5xl md:text-[5.5rem] font-heading font-light uppercase text-white tracking-tight mb-6 leading-[1.1]">
+                    Make your dream home come true<br class="hidden md:block"> with <span class="font-medium text-brandCream">architectural inspiration.</span>
+                </h1>
+            </div>
+        </div>
+
+        <!-- Carousel Controls -->
+        <div class="absolute bottom-10 md:bottom-20 right-6 sm:right-12 z-30 flex gap-4">
+            <button id="btn-prev" class="w-12 h-12 flex items-center justify-center rounded-full border border-white/30 text-white hover:bg-white hover:text-brandDark transition-colors duration-300">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M15 19l-7-7 7-7"></path></svg>
+            </button>
+            <button id="btn-next" class="w-12 h-12 flex items-center justify-center rounded-full border border-white/30 text-white hover:bg-white hover:text-brandDark transition-colors duration-300">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M9 5l7 7-7 7"></path></svg>
+            </button>
         </div>
     </header>
 
-    <!-- ABOUT US SECTION (Theme: light) -->
+    <!-- ABOUT US SECTION -->
     <section id="about" data-theme="light" class="py-32 md:py-48 w-full arch-pattern text-brandBrown">
         <div class="max-w-[1200px] mx-auto px-6 sm:px-12 grid md:grid-cols-2 gap-16 md:gap-24 items-center">
-            <div class="reveal-up order-2 md:order-1">
-                <span class="block font-heading text-sm uppercase tracking-[0.2em] mb-4 text-brandSage font-medium">Our Philosophy</span>
-                <h2 class="text-5xl md:text-6xl font-heading font-light leading-tight mb-8">
+            <div class="order-2 md:order-1">
+                <span class="ascend-right block font-heading text-sm uppercase tracking-[0.2em] mb-4 text-brandSage font-medium">Our Philosophy</span>
+                <h2 class="ascend-right text-5xl md:text-6xl font-heading font-light leading-tight mb-8">
                     Harmonizing <span class="font-medium">Form</span> and <span class="font-medium">Nature.</span>
                 </h2>
-                
-                <div class="space-y-6 text-brandBrown/80 font-light leading-relaxed mb-10 text-lg">
-                    <p>
-                        Rooted in the appreciation of authentic materials and the serene tropical landscapes of Bali, Inspirasitek redefines luxury through quiet design. We believe that architecture is not merely about constructing structures, but about cultivating living spaces that breathe alongside their inhabitants.
-                    </p>
-                    <p>
-                        Our modern minimalist approach prioritizes honest functionality without compromising elegance. By stripping away non-essential ornamentation, we give center stage to natural light, optimal airflow, and precise craftsmanship. We deliver exclusive properties that remain timeless, tranquil, and enduring across generations.
-                    </p>
+                <div class="space-y-6 text-brandBrown/80 font-light leading-relaxed mb-10 text-lg ascend-right" style="transition-delay: 0.1s;">
+                    <p>Rooted in the appreciation of authentic materials and the serene tropical landscapes of Bali, Inspirasitek redefines luxury through quiet design. We believe that architecture is not merely about constructing structures, but about cultivating living spaces that breathe alongside their inhabitants.</p>
+                    <p>Our modern minimalist approach prioritizes honest functionality without compromising elegance. By stripping away non-essential ornamentation, we give center stage to natural light, optimal airflow, and precise craftsmanship. We deliver exclusive properties that remain timeless, tranquil, and enduring across generations.</p>
                 </div>
-                
-                <a href="#portfolio" class="nav-link inline-block font-heading text-lg border-b border-brandBrown pb-1 uppercase tracking-wider hover:text-brandSage hover:border-brandSage transition-colors">
-                    Explore Our Works
-                </a>
+                <div class="ascend-right" style="transition-delay: 0.2s;">
+                    <a href="#portfolio" class="nav-link inline-block font-heading text-lg border-b border-brandBrown pb-1 uppercase tracking-wider hover:text-brandSage hover:border-brandSage transition-colors">
+                        Explore Our Works
+                    </a>
+                </div>
             </div>
-            
-            <div class="reveal-up overflow-hidden order-1 md:order-2 mb-10 md:mb-0">
-                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800" alt="About Us" class="w-full h-auto aspect-[3/4] object-cover grayscale hover:grayscale-0 transition-all duration-700 shadow-xl">
+            <div class="order-1 md:order-2 mb-10 md:mb-0">
+                <div class="square-wipe w-full h-auto aspect-[3/4] overflow-hidden shadow-xl bg-gray-200">
+                    <img src="assets/about_img.jpg" alt="About Us" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700">
+                </div>
             </div>
         </div>
     </section>
 
-<!-- PORTFOLIO SECTION (Theme: light) -->
-    <section id="portfolio" data-theme="light" class="pt-32 pb-16 w-full arch-pattern text-brandBrown relative z-10">
+    <!-- OUR WORKS (PORTFOLIO) SECTION -->
+    <section id="portfolio" data-theme="light" class="pt-16 pb-32 w-full arch-pattern text-brandBrown relative z-10">
         <div class="max-w-[1400px] mx-auto px-6 sm:px-12">
             
-            <!-- HEADER: Judul di kiri, Link di Kanan (Sesuai Referensi) -->
-            <div class="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-brandBrown/20 pb-6 reveal-up">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-brandBrown/20 pb-6">
                 <div>
-                    <h2 class="text-4xl md:text-5xl font-heading font-light uppercase tracking-tight text-brandBrown">
+                    <h2 class="ascend-right text-4xl md:text-5xl font-heading font-light uppercase tracking-tight text-brandBrown">
                         Selected <span class="font-medium">Works</span>
                     </h2>
                 </div>
-                <a href="projects.html" class="mt-4 md:mt-0 font-heading text-sm uppercase tracking-widest text-brandBrown hover:text-brandSage transition-colors border-b border-brandBrown hover:border-brandSage pb-1">
-                    View All Projects
-                </a>
+                <div class="ascend-left mt-4 md:mt-0">
+                    <a href="projects.html" class="font-heading text-sm uppercase tracking-widest text-brandBrown hover:text-brandSage transition-colors border-b border-brandBrown hover:border-brandSage pb-1">
+                        View All Projects
+                    </a>
+                </div>
             </div>
             
-            <!-- GRID 6 FOTO -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 w-full reveal-up">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 w-full">
                 
                 <!-- PORTFOLIO ITEM 1 -->
-                <a href="projects.html" class="portfolio-item group relative block overflow-hidden aspect-[4/5] bg-gray-200 w-full shadow-lg">
+                <a href="projects.html" class="portfolio-item square-wipe group relative block overflow-hidden aspect-[4/5] bg-gray-200 w-full shadow-lg">
                     <img src="assets/ct_home/CT_1.png" alt="CT's Home" class="portfolio-img absolute inset-0 w-full h-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-brandDark/80 via-transparent to-transparent group-hover:from-brandDark/90 transition-colors duration-500"></div>
                     <div class="absolute bottom-6 left-6 right-6 z-10">
@@ -269,8 +226,8 @@
                 </a>
 
                 <!-- PORTFOLIO ITEM 2 -->
-                <a href="projects.html" class="portfolio-item group relative block overflow-hidden aspect-[4/5] bg-gray-200 w-full shadow-lg">
-                    <img src="assets/portfolio_2.jpg" alt="Suara Retreat" class="portfolio-img absolute inset-0 w-full h-full object-cover">
+                <a href="projects.html" class="portfolio-item square-wipe group relative block overflow-hidden aspect-[4/5] bg-gray-200 w-full shadow-lg" style="transition-delay: 0.1s;">
+                    <img src="assets/ct_home/CT_2.png" alt="Suara Retreat" class="portfolio-img absolute inset-0 w-full h-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-brandDark/80 via-transparent to-transparent group-hover:from-brandDark/90 transition-colors duration-500"></div>
                     <div class="absolute bottom-6 left-6 right-6 z-10">
                         <h3 class="font-heading text-2xl text-white font-medium uppercase tracking-wide">Suara Retreat</h3>
@@ -279,7 +236,7 @@
                 </a>
 
                 <!-- PORTFOLIO ITEM 3 -->
-                <a href="projects.html" class="portfolio-item group relative block overflow-hidden aspect-[4/5] bg-gray-200 w-full shadow-lg">
+                <a href="projects.html" class="portfolio-item square-wipe group relative block overflow-hidden aspect-[4/5] bg-gray-200 w-full shadow-lg" style="transition-delay: 0.2s;">
                     <img src="assets/portfolio_3.jpg" alt="Breeze Loft" class="portfolio-img absolute inset-0 w-full h-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-brandDark/80 via-transparent to-transparent group-hover:from-brandDark/90 transition-colors duration-500"></div>
                     <div class="absolute bottom-6 left-6 right-6 z-10">
@@ -289,7 +246,7 @@
                 </a>
                 
                 <!-- PORTFOLIO ITEM 4 -->
-                <a href="projects.html" class="portfolio-item group relative block overflow-hidden aspect-[4/5] bg-gray-200 w-full shadow-lg">
+                <a href="projects.html" class="portfolio-item square-wipe group relative block overflow-hidden aspect-[4/5] bg-gray-200 w-full shadow-lg">
                     <img src="assets/portfolio_4.jpg" alt="The Cliff" class="portfolio-img absolute inset-0 w-full h-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-brandDark/80 via-transparent to-transparent group-hover:from-brandDark/90 transition-colors duration-500"></div>
                     <div class="absolute bottom-6 left-6 right-6 z-10">
@@ -299,7 +256,7 @@
                 </a>
                 
                 <!-- PORTFOLIO ITEM 5 -->
-                <a href="projects.html" class="portfolio-item group relative block overflow-hidden aspect-[4/5] bg-gray-200 w-full shadow-lg">
+                <a href="projects.html" class="portfolio-item square-wipe group relative block overflow-hidden aspect-[4/5] bg-gray-200 w-full shadow-lg" style="transition-delay: 0.1s;">
                     <img src="assets/portfolio_5.jpg" alt="Niyata Res." class="portfolio-img absolute inset-0 w-full h-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-brandDark/80 via-transparent to-transparent group-hover:from-brandDark/90 transition-colors duration-500"></div>
                     <div class="absolute bottom-6 left-6 right-6 z-10">
@@ -309,7 +266,7 @@
                 </a>
                 
                 <!-- PORTFOLIO ITEM 6 -->
-                <a href="projects.html" class="portfolio-item group relative block overflow-hidden aspect-[4/5] bg-gray-200 w-full shadow-lg">
+                <a href="projects.html" class="portfolio-item square-wipe group relative block overflow-hidden aspect-[4/5] bg-gray-200 w-full shadow-lg" style="transition-delay: 0.2s;">
                     <img src="assets/portfolio_6.jpg" alt="Lumina Pavilion" class="portfolio-img absolute inset-0 w-full h-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-brandDark/80 via-transparent to-transparent group-hover:from-brandDark/90 transition-colors duration-500"></div>
                     <div class="absolute bottom-6 left-6 right-6 z-10">
@@ -321,286 +278,208 @@
         </div>
     </section>
 
-<!-- SERVICES SECTION (Editorial Layout 4 Gambar Zig-Zag) -->
+    <!-- SERVICES SECTION -->
     <section id="services" data-theme="light" class="pt-16 md:pt-24 pb-32 md:pb-48 w-full arch-pattern bg-brandCream text-brandBrown relative z-10">
         <div class="max-w-[1400px] mx-auto px-6 sm:px-12">
             
-            <!-- Section Header (Sesuai Referensi) -->
-            <div class="text-center mb-24 reveal-up">
-                <span class="block font-heading text-xs uppercase tracking-[0.2em] mb-3 text-brandSage font-medium">Our Expertise</span>
-                <h2 class="text-5xl md:text-6xl font-heading font-light uppercase tracking-tight text-brandBrown">
+            <div class="text-center mb-24">
+                <span class="ascend-up block font-heading text-xs uppercase tracking-[0.2em] mb-3 text-brandSage font-medium">Our Expertise</span>
+                <h2 class="ascend-up text-5xl md:text-6xl font-heading font-light uppercase tracking-tight text-brandBrown">
                     Our <span class="font-medium">Services.</span>
                 </h2>
             </div>
             
-            <!-- 3-Column Grid -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start relative">
                 
-                <!-- KOLOM KIRI (Gambar 1 dan Gambar 3) -->
-                <div class="hidden lg:flex lg:col-span-3 flex-col gap-[45rem] mt-12 reveal-up">
-                    <div class="w-full aspect-[3/4] overflow-hidden rounded-sm shadow-xl bg-gray-200">
-                        <!-- Gambar 1 Kiri Atas -->
-                        <img src="assets/services_1.jpg" alt="Residential Concept" class="w-full h-full object-cover">
+                <!-- KOLOM KIRI (Gambar) -->
+                <div class="hidden lg:flex lg:col-span-3 flex-col gap-[45rem] mt-12">
+                    <div class="square-wipe w-full aspect-[3/4] overflow-hidden rounded-sm shadow-xl bg-gray-200">
+                        <img src="assets/services_1.jpg" alt="Residential" class="w-full h-full object-cover">
                     </div>
-                    <div class="w-full aspect-[3/4] overflow-hidden rounded-sm shadow-xl bg-gray-200">
-                        <!-- Gambar 3 Kiri Bawah -->
-                        <img src="assets/services_3.jpg" alt="Interior Details" class="w-full h-full object-cover">
+                    <div class="square-wipe w-full aspect-[3/4] overflow-hidden rounded-sm shadow-xl bg-gray-200">
+                        <img src="assets/services_3.jpg" alt="Interior" class="w-full h-full object-cover">
                     </div>
                 </div>
 
                 <!-- KOLOM TENGAH (Teks Layanan) -->
                 <div class="w-full lg:col-span-6 flex flex-col gap-16 md:gap-20 px-0 lg:px-6">
-                    
-                    <!-- 01 / RESIDENTIAL -->
-                    <div class="reveal-up border-t border-brandBrown/20 pt-8">
+                    <!-- 01 -->
+                    <div class="ascend-up border-t border-brandBrown/20 pt-8">
                         <span class="font-heading text-2xl text-brandBrown/40 mb-2 block">01</span>
                         <h3 class="font-heading text-3xl md:text-4xl font-light uppercase leading-tight mb-4 text-brandBrown">Residential</h3>
                         <p class="font-medium text-[10px] md:text-xs tracking-[0.2em] text-brandSage uppercase mb-8">House, Villa & Apartment Interior.</p>
                         <ul class="font-light space-y-4 text-brandBrown/80 text-sm grid grid-cols-1 sm:grid-cols-2 gap-x-4">
-                            <li>• Bedroom & Living Room</li>
-                            <li>• Kitchen & Dining Area</li>
-                            <li>• Custom Furniture</li>
-                            <li>• Interior Renovation</li>
+                            <li>• Bedroom & Living Room</li><li>• Kitchen & Dining Area</li><li>• Custom Furniture</li><li>• Interior Renovation</li>
                         </ul>
                     </div>
-
-                    <!-- 02 / COMMERCIAL & HOSPITALITY -->
-                    <div class="reveal-up border-t border-brandBrown/20 pt-8">
+                    <!-- 02 -->
+                    <div class="ascend-up border-t border-brandBrown/20 pt-8">
                         <span class="font-heading text-2xl text-brandBrown/40 mb-2 block">02</span>
                         <h3 class="font-heading text-3xl md:text-4xl font-light uppercase leading-tight mb-4 text-brandBrown">Commercial & Hospitality</h3>
                         <p class="font-medium text-[10px] md:text-xs tracking-[0.2em] text-brandSage uppercase mb-8">Cafés, Restaurants, Retail & Commercial Spaces</p>
                         <ul class="font-light space-y-4 text-brandBrown/80 text-sm grid grid-cols-1 sm:grid-cols-2 gap-x-4">
-                            <li>• Café & Restaurant Interior</li>
-                            <li>• Retail & Boutique</li>
-                            <li>• Office & Commercial Space</li>
-                            <li>• Salon & Beauty Space</li>
-                            <li>• Hospitality Interior</li>
-                            <li>• Customer Flow & Space Planning</li>
+                            <li>• Café & Restaurant Interior</li><li>• Retail & Boutique</li><li>• Office & Commercial Space</li><li>• Salon & Beauty Space</li><li>• Hospitality Interior</li><li>• Customer Flow & Space Planning</li>
                         </ul>
                     </div>
-
-                    <!-- 03 / INTERIOR DESIGN & BUILD -->
-                    <div class="reveal-up border-t border-brandBrown/20 pt-8">
+                    <!-- 03 -->
+                    <div class="ascend-up border-t border-brandBrown/20 pt-8">
                         <span class="font-heading text-2xl text-brandBrown/40 mb-2 block">03</span>
                         <h3 class="font-heading text-3xl md:text-4xl font-light uppercase leading-tight mb-4 text-brandBrown">Interior Design & Build</h3>
                         <p class="font-medium text-[10px] md:text-xs tracking-[0.2em] text-brandSage uppercase mb-8">From Concept to Completion</p>
                         <ul class="font-light space-y-4 text-brandBrown/80 text-sm grid grid-cols-1 sm:grid-cols-2 gap-x-4">
-                            <li>• Concept & Interior Design</li>
-                            <li>• Space Planning</li>
-                            <li>• 3D Visualization</li>
-                            <li>• Material & Color Selection</li>
-                            <li>• Working Drawing</li>
-                            <li>• Interior Construction</li>
-                            <li>• Custom Furniture</li>
-                            <li>• Electrical & Lighting</li>
-                            <li>• Finishing & Installation</li>
+                            <li>• Concept & Interior Design</li><li>• Space Planning</li><li>• 3D Visualization</li><li>• Material & Color Selection</li><li>• Working Drawing</li><li>• Interior Construction</li><li>• Custom Furniture</li><li>• Electrical & Lighting</li><li>• Finishing & Installation</li>
                         </ul>
                     </div>
-
-                    <!-- 04 / CUSTOM FURNITURE -->
-                    <div class="reveal-up border-t border-brandBrown/20 pt-8">
+                    <!-- 04 -->
+                    <div class="ascend-up border-t border-brandBrown/20 pt-8">
                         <span class="font-heading text-2xl text-brandBrown/40 mb-2 block">04</span>
                         <h3 class="font-heading text-3xl md:text-4xl font-light uppercase leading-tight mb-4 text-brandBrown">Custom Furniture</h3>
                         <p class="font-medium text-[10px] md:text-xs tracking-[0.2em] text-brandSage uppercase mb-8">Furniture Designed for Your Space</p>
                         <ul class="font-light space-y-4 text-brandBrown/80 text-sm grid grid-cols-1 sm:grid-cols-2 gap-x-4">
-                            <li>• Built-in Furniture</li>
-                            <li>• Kitchen Set</li>
-                            <li>• Wardrobe</li>
-                            <li>• TV Cabinet</li>
-                            <li>• Display & Storage</li>
-                            <li>• Custom Commercial Furniture</li>
+                            <li>• Built-in Furniture</li><li>• Kitchen Set</li><li>• Wardrobe</li><li>• TV Cabinet</li><li>• Display & Storage</li><li>• Custom Commercial Furniture</li>
                         </ul>
                     </div>
-
-                    <!-- 05 / BUILDING CONSTRUCTION -->
-                    <div class="reveal-up border-t border-brandBrown/20 pt-8">
+                    <!-- 05 -->
+                    <div class="ascend-up border-t border-brandBrown/20 pt-8">
                         <span class="font-heading text-2xl text-brandBrown/40 mb-2 block">05</span>
                         <h3 class="font-heading text-3xl md:text-4xl font-light uppercase leading-tight mb-4 text-brandBrown">Building Construction</h3>
                         <ul class="font-light space-y-4 text-brandBrown/80 text-sm mt-8">
-                            <li>• Residential</li>
-                            <li>• Commercial</li>
+                            <li>• Residential</li><li>• Commercial</li>
                         </ul>
                     </div>
                 </div>
 
-                <!-- KOLOM KANAN (Gambar 2 dan Gambar 4) -->
-                <div class="hidden lg:flex lg:col-span-3 flex-col gap-[35rem] mt-96 reveal-up">
-                    <div class="w-full aspect-[4/5] overflow-hidden rounded-sm shadow-xl bg-gray-200">
-                        <!-- Gambar 2 Kanan Tengah -->
-                        <img src="assets/services_2.jpg" alt="Commercial Space" class="w-full h-full object-cover">
+                <!-- KOLOM KANAN (Gambar) -->
+                <div class="hidden lg:flex lg:col-span-3 flex-col gap-[35rem] mt-96">
+                    <div class="square-wipe w-full aspect-[4/5] overflow-hidden rounded-sm shadow-xl bg-gray-200">
+                        <img src="assets/services_2.jpg" alt="Commercial" class="w-full h-full object-cover">
                     </div>
-                    <div class="w-full aspect-[4/5] overflow-hidden rounded-sm shadow-xl bg-gray-200">
-                        <!-- Gambar 4 Kanan Bawah -->
-                        <img src="assets/services_4.jpg" alt="Construction Stage" class="w-full h-full object-cover">
+                    <div class="square-wipe w-full aspect-[4/5] overflow-hidden rounded-sm shadow-xl bg-gray-200">
+                        <img src="assets/services_4.jpg" alt="Construction" class="w-full h-full object-cover">
                     </div>
                 </div>
                 
-                <!-- Fallback Mobile: Susun 4 foto jadi grid 2x2 di bawah teks -->
-                <div class="lg:hidden grid grid-cols-2 gap-4 reveal-up mt-12 w-full">
-                    <div class="aspect-[3/4] overflow-hidden rounded-sm shadow-lg"><img src="assets/services_1.jpg" alt="Img 1" class="w-full h-full object-cover"></div>
-                    <div class="aspect-[3/4] overflow-hidden rounded-sm shadow-lg mt-8"><img src="assets/services_2.jpg" alt="Img 2" class="w-full h-full object-cover"></div>
-                    <div class="aspect-[3/4] overflow-hidden rounded-sm shadow-lg"><img src="assets/services_3.jpg" alt="Img 3" class="w-full h-full object-cover"></div>
-                    <div class="aspect-[3/4] overflow-hidden rounded-sm shadow-lg mt-8"><img src="assets/services_4.jpg" alt="Img 4" class="w-full h-full object-cover"></div>
+                <!-- Fallback Mobile Grid -->
+                <div class="lg:hidden grid grid-cols-2 gap-4 mt-12 w-full">
+                    <div class="square-wipe aspect-[3/4] overflow-hidden rounded-sm shadow-lg"><img src="assets/services_1.jpg" class="w-full h-full object-cover"></div>
+                    <div class="square-wipe aspect-[3/4] overflow-hidden rounded-sm shadow-lg mt-8"><img src="assets/services_2.jpg" class="w-full h-full object-cover"></div>
+                    <div class="square-wipe aspect-[3/4] overflow-hidden rounded-sm shadow-lg"><img src="assets/services_3.jpg" class="w-full h-full object-cover"></div>
+                    <div class="square-wipe aspect-[3/4] overflow-hidden rounded-sm shadow-lg mt-8"><img src="assets/services_4.jpg" class="w-full h-full object-cover"></div>
                 </div>
 
             </div>
         </div>
     </section>
 
-<!-- CONTACT / FOOTER (Editorial Style) -->
-    <footer id="contact" data-theme="dark" class="bg-brandDark text-brandCream pt-32 pb-8 w-full arch-pattern dark-pattern relative">
+    <!-- FOOTER -->
+    <footer data-theme="dark" class="bg-brandDark text-brandCream pt-32 pb-8 w-full relative z-10 arch-pattern dark-pattern">
         <div class="max-w-[1400px] mx-auto px-6 sm:px-12">
-            
-            <!-- Main Footer Content -->
             <div class="flex flex-col lg:flex-row justify-between items-start gap-20 lg:gap-12 mb-32 md:mb-48">
-                
-                <!-- Sisi Kiri: Pesan Penutup & Kontak -->
-                <div class="w-full lg:w-4/12 flex flex-col justify-between reveal-up h-full">
+                <div class="w-full lg:w-4/12 flex flex-col justify-between h-full ascend-right">
                     <p class="font-light text-brandCream/80 text-lg md:text-xl max-w-sm mb-16 md:mb-32 leading-relaxed">
                         Partner with us for an exceptional design journey, from initial vision to final construction.
                     </p>
-                    
                     <div class="space-y-4 font-light text-brandCream/90 text-sm md:text-base tracking-wide">
-                        <a href="https://wa.me/6281234567890" target="_blank" class="block hover:text-brandSage transition-colors duration-300">
-                            +62 812 3456 7890
-                        </a>
-                        <a href="mailto:info@inspirasitek.com" class="block hover:text-brandSage transition-colors duration-300">
-                            info@inspirasitek.com
-                        </a>
-                        <p class="pt-6 text-brandCream/60">
-                            Jl. Raya Seminyak No. 99<br>Kuta, Bali, Indonesia
-                        </p>
+                        <a href="https://wa.me/6281234567890" class="block hover:text-brandSage transition-colors">+62 812 3456 7890</a>
+                        <a href="mailto:info@inspirasitek.com" class="block hover:text-brandSage transition-colors">info@inspirasitek.com</a>
+                        <p class="pt-6 text-brandCream/60">Jl. Raya Seminyak No. 99<br>Kuta, Bali, Indonesia</p>
                     </div>
                 </div>
-
-                <!-- Sisi Kanan: Headline Besar & CTA Button -->
-                <div class="w-full lg:w-7/12 flex flex-col items-start reveal-up">
-                    <h2 class="font-heading text-6xl sm:text-7xl md:text-[6.5rem] lg:text-[7.5rem] font-light tracking-tight text-white leading-[1] mb-12 lg:mb-16">
+                <div class="w-full lg:w-7/12 flex flex-col items-start ascend-left">
+                    <h2 class="font-heading text-6xl sm:text-7xl md:text-[7.5rem] font-light tracking-tight text-white leading-[1] mb-12 lg:mb-16">
                         Start Your<br>Project.
                     </h2>
-                    
                     <div class="flex flex-wrap gap-4 w-full">
-                        <a href="mailto:info@inspirasitek.com" class="inline-flex items-center gap-3 px-8 py-4 bg-white text-brandDark font-medium text-xs tracking-[0.15em] uppercase hover:bg-brandSage hover:text-white transition-colors duration-300 rounded-full">
+                        <a href="mailto:info@inspirasitek.com" class="inline-flex items-center gap-3 px-8 py-4 bg-white text-brandDark font-medium text-xs tracking-[0.15em] uppercase hover:bg-brandSage hover:text-white transition-colors rounded-full">
                             Contact Us
-                            <!-- Ikon Panah Diagonal -->
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M7 17L17 7m0 0H8m9 0v9"/>
-                            </svg>
                         </a>
-                        <a href="https://instagram.com/inspirasitek" target="_blank" class="inline-flex items-center gap-3 px-8 py-4 bg-transparent border border-white/30 text-white font-medium text-xs tracking-[0.15em] uppercase hover:border-white hover:bg-white/10 transition-colors duration-300 rounded-full">
+                        <a href="https://instagram.com/inspirasitek" target="_blank" class="inline-flex items-center gap-3 px-8 py-4 bg-transparent border border-white/30 text-white font-medium text-xs tracking-[0.15em] uppercase hover:border-white hover:bg-white/10 transition-colors rounded-full">
                             Instagram
-                            <!-- Ikon Panah Diagonal -->
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M7 17L17 7m0 0H8m9 0v9"/>
-                            </svg>
                         </a>
                     </div>
                 </div>
             </div>
-
-            <!-- Bottom Bar: Copyright & Policy -->
-            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] sm:text-xs font-light text-brandCream/40 tracking-[0.2em] uppercase reveal-up">
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] sm:text-xs font-light text-brandCream/40 tracking-[0.2em] uppercase ascend-right">
                 <p>&copy; 2026 INSPIRASITEK STUDIO. ALL RIGHTS RESERVED.</p>
-                <div class="flex space-x-8">
-                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
-                </div>
+                <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
             </div>
-            
         </div>
     </footer>
 
     <!-- STICKY WHATSAPP BUTTON -->
     <a href="https://wa.me/6281234567890" target="_blank" class="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-[#25D366] text-white rounded-full shadow-2xl hover:scale-110 transition-transform duration-300 group">
-        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12.031 0C5.385 0 0 5.388 0 12.037c0 2.112.553 4.186 1.597 5.998L.1 23.996l6.113-1.603a12.034 12.034 0 005.818 1.498c6.645 0 12.032-5.388 12.032-12.037C24.063 5.388 18.676 0 12.031 0zm-.008 21.84c-1.785 0-3.535-.48-5.074-1.39l-.364-.216-3.77 1.002.997-3.676-.237-.376A9.972 9.972 0 012.062 12.03c0-5.513 4.488-10.005 10.001-10.005 5.515 0 10.003 4.492 10.003 10.005 0 5.512-4.488 10.004-10.003 10.004h-.032zm5.492-7.502c-.302-.151-1.784-.881-2.061-.98-.277-.1-.479-.151-.681.151-.2.302-.781.98-.957 1.18-.176.202-.353.227-.655.076-1.503-.761-2.73-1.637-3.79-3.411-.176-.302-.018-.465.133-.616.135-.135.303-.353.454-.53.151-.176.202-.301.302-.503.101-.202.051-.377-.025-.529-.076-.151-.681-1.637-.933-2.242-.246-.593-.496-.513-.681-.522-.176-.008-.378-.008-.58-.008-.202 0-.529.076-.807.378-.277.302-1.059 1.034-1.059 2.518 0 1.484 1.084 2.919 1.235 3.12.151.202 2.128 3.245 5.155 4.547.72.311 1.28.497 1.718.636.723.23 1.381.197 1.902.119.585-.088 1.784-.73 2.036-1.435.252-.705.252-1.31.176-1.436-.075-.126-.277-.202-.579-.353z"/>
-        </svg>
+        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.031 0C5.385 0 0 5.388 0 12.037c0 2.112.553 4.186 1.597 5.998L.1 23.996l6.113-1.603a12.034 12.034 0 005.818 1.498c6.645 0 12.032-5.388 12.032-12.037C24.063 5.388 18.676 0 12.031 0zm-.008 21.84c-1.785 0-3.535-.48-5.074-1.39l-.364-.216-3.77 1.002.997-3.676-.237-.376A9.972 9.972 0 012.062 12.03c0-5.513 4.488-10.005 10.001-10.005 5.515 0 10.003 4.492 10.003 10.005 0 5.512-4.488 10.004-10.003 10.004h-.032zm5.492-7.502c-.302-.151-1.784-.881-2.061-.98-.277-.1-.479-.151-.681.151-.2.302-.781.98-.957 1.18-.176.202-.353.227-.655.076-1.503-.761-2.73-1.637-3.79-3.411-.176-.302-.018-.465.133-.616.135-.135.303-.353.454-.53.151-.176.202-.301.302-.503.101-.202.051-.377-.025-.529-.076-.151-.681-1.637-.933-2.242-.246-.593-.496-.513-.681-.522-.176-.008-.378-.008-.58-.008-.202 0-.529.076-.807.378-.277.302-1.059 1.034-1.059 2.518 0 1.484 1.084 2.919 1.235 3.12.151.202 2.128 3.245 5.155 4.547.72.311 1.28.497 1.718.636.723.23 1.381.197 1.902.119.585-.088 1.784-.73 2.036-1.435.252-.705.252-1.31.176-1.436-.075-.126-.277-.202-.579-.353z"/></svg>
     </a>
 
     <!-- JAVASCRIPT -->
     <script>
-        // 1. Lenis Smooth Scroll Setup
-        const lenis = new Lenis({
-            duration: 1.5,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
-            smooth: true,
-        });
-        function raf(time) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
+        // 1. Lenis Smooth Scroll
+        const lenis = new Lenis({ duration: 1.5, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smooth: true });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
         requestAnimationFrame(raf);
 
-        // Mobile Menu Logic
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const menuIcon = document.getElementById('menu-icon');
-        let isMobileMenuOpen = false;
+        // 2. Preloader Split Reveal & Trigger Hero Animasi
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.body.classList.add('loaded'); 
+                setTimeout(() => { document.getElementById('preloader').style.display = 'none'; }, 1200);
+                
+                // Trigger teks hero agar muncul setelah layar terbelah
+                setTimeout(() => {
+                    document.querySelectorAll('.ascend-up').forEach(el => el.classList.add('active'));
+                }, 400);
+            }, 800); 
+        });
 
-        function toggleMobileMenu() {
-            isMobileMenuOpen = !isMobileMenuOpen;
-            if (isMobileMenuOpen) {
-                mobileMenu.classList.remove('opacity-0', 'pointer-events-none');
-                menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12'); 
-            } else {
-                mobileMenu.classList.add('opacity-0', 'pointer-events-none');
-                menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16'); 
-            }
+        // 3. Carousel Logic
+        const slides = document.querySelectorAll('.carousel-slide');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        let currentSlide = 0;
+        let slideInterval;
+
+        function goToSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (index + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+            resetInterval();
         }
-        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+        function nextSlide() { goToSlide(currentSlide + 1); }
+        function prevSlide() { goToSlide(currentSlide - 1); }
+        btnNext.addEventListener('click', nextSlide);
+        btnPrev.addEventListener('click', prevSlide);
+        function resetInterval() {
+            clearInterval(slideInterval);
+            slideInterval = setInterval(nextSlide, 5000); 
+        }
+        resetInterval();
 
-        // Fix Bug Klik Tautan Navbar 
+        // 4. Navbar Fix Click Logic
         document.querySelectorAll('.nav-link, .mobile-nav-link').forEach(link => {
             link.addEventListener('click', (e) => {
-                const targetId = link.getAttribute('href');
+                const targetId = link.getAttribute('href').replace('index.html', ''); // bersihkan link
                 if (targetId && targetId.startsWith('#')) {
                     e.preventDefault();
-                    
-                    if (!mobileMenu.classList.contains('pointer-events-none')) {
-                        toggleMobileMenu();
+                    if (!document.getElementById('mobile-menu').classList.contains('opacity-0')) {
+                        document.getElementById('mobile-menu-btn').click(); // tutup menu
                     }
-
                     const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        lenis.scrollTo(targetElement, { offset: 0, duration: 1.2 });
-                    }
+                    if (targetElement) lenis.scrollTo(targetElement, { offset: 0, duration: 1.2 });
                 }
             });
         });
 
-        // 2. Preloader
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                const preloader = document.getElementById('preloader');
-                preloader.style.opacity = '0';
-                preloader.style.visibility = 'hidden';
-                
-                setTimeout(() => {
-                    document.querySelectorAll('#hero .reveal-up').forEach(el => el.classList.add('active'));
-                }, 300);
-            }, 1200); 
-        });
-
-        // 3. Navbar Show/Hide Logic
+        // 5. Navbar Show/Hide
         let lastScroll = 0;
         const navbar = document.getElementById('navbar');
-        
         lenis.on('scroll', (e) => {
-            if (isMobileMenuOpen) return; 
-
             const currentScroll = e.animatedScroll;
-            const heroHeight = document.getElementById('hero').offsetHeight;
-
-            if (currentScroll < heroHeight * 0.7) {
-                navbar.classList.remove('nav-hidden');
-            } else if (currentScroll > lastScroll && currentScroll > 100) {
-                navbar.classList.add('nav-hidden');
-            } else if (currentScroll < lastScroll) {
-                navbar.classList.remove('nav-hidden');
-            }
+            if (currentScroll > lastScroll && currentScroll > 100) navbar.classList.add('nav-hidden');
+            else if (currentScroll < lastScroll) navbar.classList.remove('nav-hidden');
             lastScroll = currentScroll;
         });
 
-        // 4. SMART NAVBAR (Ganti Warna Teks & Logo Berdasarkan Background Terang/Gelap)
+        // 6. Smart Navbar Theme Observer
         const themeObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -610,69 +489,49 @@
                     const menuBtn = document.getElementById('mobile-menu-btn');
 
                     if (theme === 'light') {
-                        // Background terang -> Teks & Logo jadi Gelap
-                        navLinks.forEach(link => {
-                            link.classList.remove('text-white');
-                            link.classList.add('text-brandBrown');
-                        });
-                        navLogo.style.filter = 'brightness(0)'; // Logo hitam/cokelat
-                        menuBtn.classList.remove('text-white');
-                        menuBtn.classList.add('text-brandBrown');
+                        navLinks.forEach(link => { link.classList.remove('text-white'); link.classList.add('text-brandBrown'); });
+                        navLogo.style.filter = 'brightness(0)'; 
+                        menuBtn.classList.remove('text-white'); menuBtn.classList.add('text-brandBrown');
                     } else {
-                        // Background gelap -> Teks & Logo jadi Putih
-                        navLinks.forEach(link => {
-                            link.classList.remove('text-brandBrown');
-                            link.classList.add('text-white');
-                        });
-                        navLogo.style.filter = 'brightness(0) invert(1)'; // Logo putih
-                        menuBtn.classList.remove('text-brandBrown');
-                        menuBtn.classList.add('text-white');
+                        navLinks.forEach(link => { link.classList.remove('text-brandBrown'); link.classList.add('text-white'); });
+                        navLogo.style.filter = 'brightness(0) invert(1)'; 
+                        menuBtn.classList.remove('text-brandBrown'); menuBtn.classList.add('text-white');
                     }
                 }
             });
-        }, { rootMargin: '-10% 0px -85% 0px' }); // Memicu perubahan warna saat section baru menyentuh area 10% atas layar
+        }, { rootMargin: '-10% 0px -85% 0px' }); 
+        document.querySelectorAll('section, header, footer').forEach(sec => { if (sec.hasAttribute('data-theme')) themeObserver.observe(sec); });
 
-        document.querySelectorAll('section, header, footer').forEach(sec => {
-            if (sec.hasAttribute('data-theme')) {
-                themeObserver.observe(sec);
+// 7. Scroll Animations (Wipe & Ascend)
+        const animObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Memberikan sedikit waktu (delay) agar elemen selesai dirender sebelum animasi berjalan
+                    setTimeout(() => {
+                        entry.target.classList.add('active');
+                    }, 50);
+                    observer.unobserve(entry.target);
+                }
+            });
+        // PERBAIKAN: threshold diubah menjadi 0 agar animasi tidak macet saat elemen terpotong clip-path
+        }, { root: null, rootMargin: '50px 0px 0px 0px', threshold: 0 }); 
+        
+        // Pilih elemen yang bukan di hero (karena hero ditrigger saat preloader selesai)
+        document.querySelectorAll('.ascend-right, .ascend-left, .ascend-up, .square-wipe').forEach(el => {
+            if (!el.closest('#hero')) animObserver.observe(el);
+        });
+
+        // 8. Mobile Menu Button
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const iconPath = this.querySelector('path');
+            if(mobileMenu.classList.contains('opacity-0')) {
+                mobileMenu.classList.remove('opacity-0', 'pointer-events-none');
+                iconPath.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+            } else {
+                mobileMenu.classList.add('opacity-0', 'pointer-events-none');
+                iconPath.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
             }
-        });
-
-        // 5. Hero Carousel
-        const bgImages = document.querySelectorAll('.carousel-bg');
-        let currentBgIndex = 0;
-        setInterval(() => {
-            bgImages[currentBgIndex].classList.remove('active');
-            currentBgIndex = (currentBgIndex + 1) % bgImages.length;
-            bgImages[currentBgIndex].classList.add('active');
-        }, 3000);
-
-        // 6. Animasi Slide Up (Umum)
-        const revealObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { root: null, rootMargin: '0px', threshold: 0.15 });
-
-        document.querySelectorAll('.reveal-up').forEach(el => {
-            if (!el.closest('#hero')) revealObserver.observe(el);
-        });
-
-        // 7. Animasi PPT-Style (Khusus Layanan)
-        const serviceObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('service-active');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { root: null, rootMargin: '0px 0px -15% 0px', threshold: 0 }); 
-
-        document.querySelectorAll('.service-item').forEach(el => {
-            serviceObserver.observe(el);
         });
     </script>
 </body>

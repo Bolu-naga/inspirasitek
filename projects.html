@@ -37,16 +37,27 @@
     </script>
 
     <style>
-        /* Tekstur Arsitektur (Blueprint) */
-        .arch-pattern {
-            position: relative;
+        /* ================= ANIMASI OPENING (SPLIT REVEAL) ================= */
+        #preloader {
+            position: fixed; inset: 0; z-index: 9999; display: flex; pointer-events: none;
         }
+        .split-panel {
+            flex: 1; background-color: #F1E9D7; height: 100vh;
+            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .preloader-logo {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            transition: opacity 0.4s ease, transform 0.8s ease; z-index: 10000;
+        }
+        /* Saat halaman dimuat, panel membelah ke kiri dan kanan */
+        body.loaded .split-panel.left { transform: translateX(-100%); }
+        body.loaded .split-panel.right { transform: translateX(100%); }
+        body.loaded .preloader-logo { opacity: 0; transform: translate(-50%, -60%); }
+
+        /* ================= TEKSTUR ARSITEKTUR ================= */
+        .arch-pattern { position: relative; }
         .arch-pattern::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
+            content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
             background-image: 
                 linear-gradient(currentColor 1px, transparent 1px),
                 linear-gradient(90deg, currentColor 1px, transparent 1px),
@@ -55,121 +66,216 @@
             background-position: -1px -1px, -1px -1px, -1px -1px;
             opacity: 0.05; 
         }
-        .arch-pattern > * {
-            position: relative;
-            z-index: 1;
-        }
+        .arch-pattern > * { position: relative; z-index: 1; }
 
-        #navbar {
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            background-color: transparent !important;
+        /* ================= CAROUSEL HIGHLIGHTS ================= */
+        .carousel-slide {
+            position: absolute; inset: 0; opacity: 0; pointer-events: none;
+            transition: opacity 1.2s ease;
         }
-        .nav-hidden {
-            transform: translateY(-100%);
+        .carousel-slide.active { opacity: 1; pointer-events: auto; z-index: 10; }
+        .carousel-img {
+            width: 100%; height: 100%; object-fit: cover; transform: scale(1.05);
+            transition: transform 6s ease-out; /* Slow zoom paralax effect */
         }
+        .carousel-slide.active .carousel-img { transform: scale(1); }
+        
+        /* Text Reveal dalam Carousel */
+        .carousel-text { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .carousel-slide.active .carousel-text { opacity: 1; transform: translateY(0); transition-delay: 0.4s; }
 
-        /* Reveal Animation Umum */
-        .reveal-up {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .reveal-up.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        /* ================= SCROLL ANIMATIONS (ASCEND & WIPE) ================= */
+        /* Ascend to Right (Dari kiri bawah ke kanan atas) */
+        .ascend-right { opacity: 0; transform: translate(-40px, 40px); transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+        .ascend-right.active { opacity: 1; transform: translate(0, 0); }
+
+        /* Ascend to Left (Dari kanan bawah ke kiri atas) */
+        .ascend-left { opacity: 0; transform: translate(40px, 40px); transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+        .ascend-left.active { opacity: 1; transform: translate(0, 0); }
+
+        /* Square Wipe (Untuk Gambar: Terpotong dari bawah, tersingkap ke atas) */
+        .square-wipe { clip-path: inset(100% 0 0 0); transition: clip-path 1.2s cubic-bezier(0.77, 0, 0.175, 1); }
+        .square-wipe.active { clip-path: inset(0 0 0 0); }
+
+        /* Navbar Transition */
+        #navbar { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); background-color: transparent !important; }
+        .nav-hidden { transform: translateY(-100%); }
+        .nav-link { transition: color 0.4s ease; }
 
         /* Hover Effect pada Project Card */
-        .project-card {
-            overflow: hidden;
-            position: relative;
-        }
-        .project-img {
-            transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        .project-card:hover .project-img {
-            transform: scale(1.05);
-        }
-        .project-overlay {
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-        .project-card:hover .project-overlay {
-            opacity: 1;
-        }
+        .project-card { overflow: hidden; position: relative; }
+        .project-img-inner { transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .project-card:hover .project-img-inner { transform: scale(1.05); }
     </style>
 </head>
 <body class="font-body text-brandBrown bg-brandCream antialiased overflow-x-hidden arch-pattern">
 
-    <!-- NAVBAR (Khusus Page Works - Teks Gelap) -->
-    <nav id="navbar" class="fixed w-full z-50 top-0 py-6 transition-all duration-500">
+    <!-- PRELOADER (SPLIT REVEAL) -->
+    <div id="preloader">
+        <div class="split-panel left"></div>
+        <div class="split-panel right"></div>
+        <div class="preloader-logo text-center">
+            <h1 class="font-heading text-5xl font-medium tracking-widest text-brandBrown uppercase">INSPIRASITEK</h1>
+        </div>
+    </div>
+
+    <!-- SMART NAVBAR -->
+    <nav id="navbar" class="fixed w-full z-50 top-0 py-6 md:py-8 transition-transform duration-500">
         <div class="max-w-[1400px] mx-auto px-6 sm:px-12 flex justify-between items-center">
-            
-            <!-- LOGO - Menggunakan filter brightness(0) agar logo SVG/PNG menjadi cokelat/hitam -->
             <a href="index.html" class="flex items-center relative z-50 -ml-2 md:-ml-6">
-                <img src="assets/logo_inspirasitek.png" alt="Inspirasitek Logo" class="h-100 md:h-100 w-auto object-contain" style="filter: brightness(0);">
+                <!-- Logo transisi warna otomatis oleh JS -->
+                <img id="nav-logo" src="logo_inspirasitek.png" alt="Inspirasitek Logo" class="h-8 md:h-10 w-auto object-contain transition-all duration-500 drop-shadow-md" style="filter: brightness(0) invert(1);">
             </a>
-
-            <!-- Desktop Menu (Teks Cokelat) -->
+            <!-- Desktop Menu -->
             <div class="hidden md:flex space-x-10 items-center">
-                <a href="index.html" class="text-sm font-medium uppercase tracking-widest text-brandBrown/60 hover:text-brandBrown transition-colors">Home</a>
-                <a href="index.html#about" class="text-sm font-medium uppercase tracking-widest text-brandBrown/60 hover:text-brandBrown transition-colors">About</a>
-                <a href="index.html#services" class="text-sm font-medium uppercase tracking-widest text-brandBrown/60 hover:text-brandBrown transition-colors">Services</a>
-                <a href="projects.html" class="text-sm font-medium uppercase tracking-widest text-brandBrown underline underline-offset-8">Works</a>
+                <a href="index.html" class="nav-link text-sm font-medium uppercase tracking-widest text-white hover:underline underline-offset-8 drop-shadow-md">Home</a>
+                <a href="index.html#about" class="nav-link text-sm font-medium uppercase tracking-widest text-white hover:underline underline-offset-8 drop-shadow-md">About</a>
+                <a href="index.html#services" class="nav-link text-sm font-medium uppercase tracking-widest text-white hover:underline underline-offset-8 drop-shadow-md">Services</a>
+                <a href="projects.html" class="nav-link text-sm font-medium uppercase tracking-widest text-white underline underline-offset-8 drop-shadow-md">Works</a>
             </div>
-
-            <!-- Mobile Hamburger Button -->
-            <button id="mobile-menu-btn" class="md:hidden text-brandBrown focus:outline-none relative z-50">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path id="menu-icon" stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
+            <!-- Mobile Menu Btn -->
+            <button id="mobile-menu-btn" class="md:hidden text-white transition-colors duration-500 focus:outline-none relative z-50 drop-shadow-md">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path id="menu-icon" stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path></svg>
             </button>
         </div>
     </nav>
 
     <!-- MOBILE MENU OVERLAY -->
-    <div id="mobile-menu" class="fixed inset-0 bg-brandCream/98 backdrop-blur-md z-40 flex flex-col justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300">
+    <div id="mobile-menu" class="fixed inset-0 bg-brandDark/95 backdrop-blur-md z-40 flex flex-col justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300">
         <div class="flex flex-col space-y-8 text-center">
-            <a href="index.html" class="font-heading text-4xl uppercase tracking-widest text-brandBrown hover:text-brandSage transition-colors">Home</a>
-            <a href="index.html#about" class="font-heading text-4xl uppercase tracking-widest text-brandBrown hover:text-brandSage transition-colors">About</a>
-            <a href="index.html#services" class="font-heading text-4xl uppercase tracking-widest text-brandBrown hover:text-brandSage transition-colors">Services</a>
+            <a href="index.html" class="font-heading text-4xl uppercase tracking-widest text-white hover:text-brandSage transition-colors">Home</a>
+            <a href="index.html#about" class="font-heading text-4xl uppercase tracking-widest text-white hover:text-brandSage transition-colors">About</a>
+            <a href="index.html#services" class="font-heading text-4xl uppercase tracking-widest text-white hover:text-brandSage transition-colors">Services</a>
             <a href="projects.html" class="font-heading text-4xl uppercase tracking-widest text-brandSage transition-colors">Works</a>
         </div>
     </div>
 
-    <!-- HEADER SECTION -->
-    <header class="pt-40 md:pt-56 pb-12 w-full max-w-[1400px] mx-auto px-6 sm:px-12 relative z-10">
-        <span class="reveal-up block font-heading text-sm uppercase tracking-[0.2em] text-brandSage font-medium mb-4">Selected Archives</span>
-        <h1 class="reveal-up text-5xl sm:text-6xl md:text-[5.5rem] font-heading font-light uppercase tracking-tight text-brandBrown mb-16">
-            Explore <span class="font-medium">Our Works.</span>
-        </h1>
-
-        <!-- FILTER CATEGORIES -->
-        <div id="portfolio-filters" class="reveal-up flex flex-wrap gap-8 font-heading text-sm md:text-base tracking-[0.15em] uppercase border-b border-brandBrown/20 pb-4">
-            <button data-filter="all" class="filter-btn text-brandBrown font-medium border-b-2 border-brandBrown pb-4 -mb-[17px] uppercase tracking-[0.15em]">All Projects</button>
-            <button data-filter="residential" class="filter-btn text-brandBrown/50 hover:text-brandBrown transition-colors pb-4 uppercase tracking-[0.15em]">Residential</button>
-            <button data-filter="commercial" class="filter-btn text-brandBrown/50 hover:text-brandBrown transition-colors pb-4 uppercase tracking-[0.15em]">Commercial</button>
-            <button data-filter="ongoing" class="filter-btn text-brandBrown/50 hover:text-brandBrown transition-colors pb-4 uppercase tracking-[0.15em]">Ongoing</button>
+    <!-- CAROUSEL HIGHLIGHT SECTION (Theme: dark) -->
+    <header id="highlight-hero" data-theme="dark" class="relative h-screen w-full overflow-hidden bg-brandDark">
+        
+        <!-- CAROUSEL SLIDES (5 Best Projects) -->
+        <!-- Slide 1 -->
+        <div class="carousel-slide active">
+            <img src="assets/ct_home/CT_1.png" class="carousel-img" alt="Nusa Dua Estate">
+            <div class="absolute inset-0 bg-gradient-to-t from-brandDark/90 via-black/20 to-black/40"></div>
+            <div class="absolute bottom-20 md:bottom-32 left-6 sm:left-12 max-w-[1200px] z-20">
+                <div class="carousel-text">
+                    <span class="block font-heading text-xs md:text-sm uppercase tracking-[0.3em] text-brandSage mb-4">Highlight Project 01</span>
+                    <h2 class="text-5xl sm:text-6xl md:text-8xl font-heading font-light uppercase text-white tracking-wide leading-none mb-2">
+                        Nusa Dua <span class="font-medium text-brandCream">Estate.</span>
+                    </h2>
+                    <p class="text-white/80 text-sm md:text-base tracking-widest uppercase mt-4">Nusa Dua, Bali | Residential Luxury</p>
+                </div>
+            </div>
         </div>
+        <!-- Slide 2 -->
+        <div class="carousel-slide">
+            <!-- Ganti src dengan gambar highlight ke-2 Anda -->
+            <img src="assets/ct_home/CT_2.png" class="carousel-img" alt="The Canopy">
+            <div class="absolute inset-0 bg-gradient-to-t from-brandDark/90 via-black/20 to-black/40"></div>
+            <div class="absolute bottom-20 md:bottom-32 left-6 sm:left-12 max-w-[1200px] z-20">
+                <div class="carousel-text">
+                    <span class="block font-heading text-xs md:text-sm uppercase tracking-[0.3em] text-brandSage mb-4">Highlight Project 02</span>
+                    <h2 class="text-5xl sm:text-6xl md:text-8xl font-heading font-light uppercase text-white tracking-wide leading-none mb-2">
+                        The <span class="font-medium text-brandCream">Canopy.</span>
+                    </h2>
+                    <p class="text-white/80 text-sm md:text-base tracking-widest uppercase mt-4">Jimbaran, Bali | Hospitality</p>
+                </div>
+            </div>
+        </div>
+        <!-- Slide 3 -->
+        <div class="carousel-slide">
+            <img src="assets/ct_home/CT_3.png" class="carousel-img" alt="Grand Pavilion">
+            <div class="absolute inset-0 bg-gradient-to-t from-brandDark/90 via-black/20 to-black/40"></div>
+            <div class="absolute bottom-20 md:bottom-32 left-6 sm:left-12 max-w-[1200px] z-20">
+                <div class="carousel-text">
+                    <span class="block font-heading text-xs md:text-sm uppercase tracking-[0.3em] text-brandSage mb-4">Highlight Project 03</span>
+                    <h2 class="text-5xl sm:text-6xl md:text-8xl font-heading font-light uppercase text-white tracking-wide leading-none mb-2">
+                        Grand <span class="font-medium text-brandCream">Pavilion.</span>
+                    </h2>
+                    <p class="text-white/80 text-sm md:text-base tracking-widest uppercase mt-4">Uluwatu, Bali | Commercial</p>
+                </div>
+            </div>
+        </div>
+        <!-- Slide 4 -->
+        <div class="carousel-slide">
+            <img src="assets/portfolio_1.jpg" class="carousel-img" alt="Villa Kamala">
+            <div class="absolute inset-0 bg-gradient-to-t from-brandDark/90 via-black/20 to-black/40"></div>
+            <div class="absolute bottom-20 md:bottom-32 left-6 sm:left-12 max-w-[1200px] z-20">
+                <div class="carousel-text">
+                    <span class="block font-heading text-xs md:text-sm uppercase tracking-[0.3em] text-brandSage mb-4">Highlight Project 04</span>
+                    <h2 class="text-5xl sm:text-6xl md:text-8xl font-heading font-light uppercase text-white tracking-wide leading-none mb-2">
+                        Villa <span class="font-medium text-brandCream">Kamala.</span>
+                    </h2>
+                    <p class="text-white/80 text-sm md:text-base tracking-widest uppercase mt-4">Seminyak, Bali | Private Residential</p>
+                </div>
+            </div>
+        </div>
+        <!-- Slide 5 -->
+        <div class="carousel-slide">
+            <img src="assets/portfolio_2.jpg" class="carousel-img" alt="Suara Retreat">
+            <div class="absolute inset-0 bg-gradient-to-t from-brandDark/90 via-black/20 to-black/40"></div>
+            <div class="absolute bottom-20 md:bottom-32 left-6 sm:left-12 max-w-[1200px] z-20">
+                <div class="carousel-text">
+                    <span class="block font-heading text-xs md:text-sm uppercase tracking-[0.3em] text-brandSage mb-4">Highlight Project 05</span>
+                    <h2 class="text-5xl sm:text-6xl md:text-8xl font-heading font-light uppercase text-white tracking-wide leading-none mb-2">
+                        Suara <span class="font-medium text-brandCream">Retreat.</span>
+                    </h2>
+                    <p class="text-white/80 text-sm md:text-base tracking-widest uppercase mt-4">Ubud, Bali | Boutique Resort</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CAROUSEL CONTROLS (Next/Prev Buttons) -->
+        <div class="absolute bottom-10 md:bottom-20 right-6 sm:right-12 z-30 flex gap-4">
+            <button id="btn-prev" class="w-12 h-12 flex items-center justify-center rounded-full border border-white/30 text-white hover:bg-white hover:text-brandDark transition-colors duration-300">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M15 19l-7-7 7-7"></path></svg>
+            </button>
+            <button id="btn-next" class="w-12 h-12 flex items-center justify-center rounded-full border border-white/30 text-white hover:bg-white hover:text-brandDark transition-colors duration-300">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M9 5l7 7-7 7"></path></svg>
+            </button>
+        </div>
+        
+        <!-- Scroll Down Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20 hidden md:block">
+            <div class="w-[1px] h-16 bg-white/20 relative overflow-hidden">
+                <div class="w-full h-full bg-white absolute top-0 left-0 animate-[scrollDown_2s_ease-in-out_infinite]"></div>
+            </div>
+        </div>
+        <style>@keyframes scrollDown { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }</style>
     </header>
 
-<!-- SMART ZIG-ZAG PORTFOLIO GRID -->
-    <section class="pb-32 w-full max-w-[1200px] mx-auto px-6 sm:px-12 relative z-10">
+    <!-- MAIN WORKS SECTION (Theme: light) -->
+    <section data-theme="light" class="pt-32 w-full max-w-[1400px] mx-auto px-6 sm:px-12 relative z-10">
         
+        <!-- HEADER TEXT DENGAN ASCEND ANIMATION -->
+        <div class="mb-16">
+            <span class="ascend-right block font-heading text-sm uppercase tracking-[0.2em] text-brandSage font-medium mb-4">Selected Archives</span>
+            <!-- Ascend Right (Dari Kiri ke Kanan) -->
+            <h1 class="ascend-right text-5xl sm:text-6xl md:text-[5.5rem] font-heading font-light uppercase tracking-tight text-brandBrown mb-16">
+                Explore <span class="font-medium">Our Works.</span>
+            </h1>
+
+            <!-- FILTER CATEGORIES (Ascend Left - Dari Kanan ke Kiri) -->
+            <div id="portfolio-filters" class="ascend-left flex flex-wrap gap-8 font-heading text-sm md:text-base tracking-[0.15em] uppercase border-b border-brandBrown/20 pb-4">
+                <button data-filter="all" class="filter-btn text-brandBrown font-medium border-b-2 border-brandBrown pb-4 -mb-[17px] uppercase tracking-[0.15em]">All Projects</button>
+                <button data-filter="residential" class="filter-btn text-brandBrown/50 hover:text-brandBrown transition-colors pb-4 uppercase tracking-[0.15em]">Residential</button>
+                <button data-filter="commercial" class="filter-btn text-brandBrown/50 hover:text-brandBrown transition-colors pb-4 uppercase tracking-[0.15em]">Commercial</button>
+                <button data-filter="ongoing" class="filter-btn text-brandBrown/50 hover:text-brandBrown transition-colors pb-4 uppercase tracking-[0.15em]">Ongoing</button>
+            </div>
+        </div>
+
+        <!-- SMART ZIG-ZAG PORTFOLIO GRID -->
         <div id="portfolio-grid" class="grid grid-cols-1 md:grid-cols-2 gap-y-20 md:gap-y-32 md:gap-x-12 lg:gap-x-20 items-center mt-12">
-            
-            <!-- Generate 16 Projects (Atribut class aspect akan diatur otomatis oleh JS) -->
-            <!-- Proyek 1 sampai 16 -->
+            <!-- Generate 16 Projects via Script -->
             <script>
-                // Ini hanya trik HTML rendering sederhana agar kode tidak terlalu panjang di editor Anda.
-                // Anda bisa menghapus script ini dan melakukan copy-paste manual jika ingin mengedit satu per satu.
                 const projectsData = [
-                    { title: "CT's Home", cat: "residential", loc: "Ubud", img: "assets/ct_home/CT_1.png" },
-                    { title: "The Canopy", cat: "hospitality", loc: "Jimbaran", img: "" }, 
-                    { title: "Grand Pavilion", cat: "commercial", loc: "Uluwatu", img: "" },
-                    { title: "Villa Kamala", cat: "residential", loc: "Seminyak", img: "" },
-                    { title: "Breeze Loft", cat: "commercial", loc: "Canggu", img: "" },
-                    { title: "Suara Retreat", cat: "ongoing", loc: "Ubud", img: "" },
+                    { title: "Nusa Dua Estate", cat: "residential", loc: "Nusa Dua", img: "assets/ct_home/CT_1.png" },
+                    { title: "The Canopy", cat: "hospitality", loc: "Jimbaran", img: "assets/ct_home/CT_2.png" },
+                    { title: "Grand Pavilion", cat: "commercial", loc: "Uluwatu", img: "assets/ct_home/CT_3.png" },
+                    { title: "Villa Kamala", cat: "residential", loc: "Seminyak", img: "assets/portfolio_1.jpg" },
+                    { title: "Breeze Loft", cat: "commercial", loc: "Canggu", img: "assets/portfolio_3.jpg" },
+                    { title: "Suara Retreat", cat: "ongoing", loc: "Ubud", img: "assets/portfolio_2.jpg" },
                     { title: "The Cliff", cat: "residential", loc: "Uluwatu", img: "" },
                     { title: "Niyata Res.", cat: "residential", loc: "Pererenan", img: "" },
                     { title: "Lumina Pavilion", cat: "commercial", loc: "Sanur", img: "" },
@@ -183,20 +289,22 @@
                 ];
 
                 projectsData.forEach((p, index) => {
-                    const imgTag = p.img ? `<img src="${p.img}" alt="${p.title}" class="project-img absolute inset-0 w-full h-full object-cover z-10">` 
-                                         : `<img src="" alt="${p.title}" class="project-img absolute inset-0 w-full h-full object-cover z-10 opacity-0">`;
+                    const imgTag = p.img ? `<img src="${p.img}" alt="${p.title}" class="project-img-inner absolute inset-0 w-full h-full object-cover z-10">` 
+                                         : `<img src="" alt="${p.title}" class="project-img-inner absolute inset-0 w-full h-full object-cover z-10 opacity-0">`;
                     
                     document.write(`
                         <div class="project-item w-full" data-category="${p.cat}">
-                            <a href="project_detail.html" class="project-card block w-full shadow-xl rounded-sm group relative bg-brandBrown/5 flex items-center justify-center transition-all duration-700">
+                            <!-- Square Wipe diterapkan di sini -->
+                            <a href="project_detail.html" class="project-card square-wipe block w-full shadow-xl rounded-sm group relative bg-brandBrown/5 flex items-center justify-center transition-all duration-700">
                                 <span class="absolute font-heading text-brandBrown/30 tracking-widest uppercase text-sm">Image Archive</span>
                                 ${imgTag}
-                                <div class="hidden md:flex project-overlay absolute inset-0 bg-brandBrown/70 flex-col justify-end p-8 z-20">
+                                <div class="hidden md:flex project-overlay absolute inset-0 bg-brandBrown/70 flex-col justify-end p-8 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                     <h3 class="font-heading text-3xl text-white font-medium uppercase tracking-wide">${p.title}</h3>
                                     <p class="font-body text-white/80 text-sm mt-2 tracking-wider uppercase">${p.loc} | ${p.cat}</p>
                                 </div>
                             </a>
-                            <div class="md:hidden mt-5">
+                            <!-- Teks bawah dengan animasi Ascend -->
+                            <div class="md:hidden mt-5 ascend-right">
                                 <h3 class="font-heading text-2xl text-brandBrown uppercase">${p.title}</h3>
                                 <p class="text-brandSage text-xs tracking-widest uppercase mt-1">${p.loc} | ${p.cat}</p>
                             </div>
@@ -207,18 +315,18 @@
         </div>
         
         <!-- Load More Button -->
-        <div class="flex justify-center mt-24 md:mt-32 border-t border-brandBrown/20 pt-16">
+        <div class="flex justify-center mt-24 md:mt-32 border-t border-brandBrown/20 pt-16 pb-32">
             <button id="load-more-btn" class="inline-flex items-center gap-3 px-10 py-4 bg-brandBrown text-brandCream font-medium text-xs tracking-[0.2em] uppercase hover:bg-brandSage hover:text-white transition-colors duration-300 rounded-full shadow-lg">
                 Load More Archives
             </button>
         </div>
     </section>
 
-    <!-- FOOTER  -->
-    <footer class="bg-brandDark text-brandCream pt-32 pb-8 w-full relative z-10">
+    <!-- FOOTER (Sama seperti Home) -->
+    <footer data-theme="dark" class="bg-brandDark text-brandCream pt-32 pb-8 w-full relative z-10">
         <div class="max-w-[1400px] mx-auto px-6 sm:px-12">
             <div class="flex flex-col lg:flex-row justify-between items-start gap-20 lg:gap-12 mb-32 md:mb-48">
-                <div class="w-full lg:w-4/12 flex flex-col justify-between h-full reveal-up">
+                <div class="w-full lg:w-4/12 flex flex-col justify-between h-full ascend-right">
                     <p class="font-light text-brandCream/80 text-lg md:text-xl max-w-sm mb-16 md:mb-32 leading-relaxed">
                         Partner with us for an exceptional design journey, from initial vision to final construction.
                     </p>
@@ -228,7 +336,7 @@
                         <p class="pt-6 text-brandCream/60">Jl. Raya Seminyak No. 99<br>Kuta, Bali, Indonesia</p>
                     </div>
                 </div>
-                <div class="w-full lg:w-7/12 flex flex-col items-start reveal-up">
+                <div class="w-full lg:w-7/12 flex flex-col items-start ascend-left">
                     <h2 class="font-heading text-6xl sm:text-7xl md:text-[7.5rem] font-light tracking-tight text-white leading-[1] mb-12 lg:mb-16">
                         Start Your<br>Project.
                     </h2>
@@ -239,136 +347,155 @@
                     </div>
                 </div>
             </div>
-            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] sm:text-xs font-light text-brandCream/40 tracking-[0.2em] uppercase reveal-up">
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] sm:text-xs font-light text-brandCream/40 tracking-[0.2em] uppercase ascend-right">
                 <p>&copy; 2026 INSPIRASITEK STUDIO. ALL RIGHTS RESERVED.</p>
                 <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
             </div>
         </div>
     </footer>
 
+    <!-- STICKY WHATSAPP BUTTON -->
+    <a href="https://wa.me/6281234567890" target="_blank" class="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-[#25D366] text-white rounded-full shadow-2xl hover:scale-110 transition-transform duration-300 group">
+        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.031 0C5.385 0 0 5.388 0 12.037c0 2.112.553 4.186 1.597 5.998L.1 23.996l6.113-1.603a12.034 12.034 0 005.818 1.498c6.645 0 12.032-5.388 12.032-12.037C24.063 5.388 18.676 0 12.031 0zm-.008 21.84c-1.785 0-3.535-.48-5.074-1.39l-.364-.216-3.77 1.002.997-3.676-.237-.376A9.972 9.972 0 012.062 12.03c0-5.513 4.488-10.005 10.001-10.005 5.515 0 10.003 4.492 10.003 10.005 0 5.512-4.488 10.004-10.003 10.004h-.032zm5.492-7.502c-.302-.151-1.784-.881-2.061-.98-.277-.1-.479-.151-.681.151-.2.302-.781.98-.957 1.18-.176.202-.353.227-.655.076-1.503-.761-2.73-1.637-3.79-3.411-.176-.302-.018-.465.133-.616.135-.135.303-.353.454-.53.151-.176.202-.301.302-.503.101-.202.051-.377-.025-.529-.076-.151-.681-1.637-.933-2.242-.246-.593-.496-.513-.681-.522-.176-.008-.378-.008-.58-.008-.202 0-.529.076-.807.378-.277.302-1.059 1.034-1.059 2.518 0 1.484 1.084 2.919 1.235 3.12.151.202 2.128 3.245 5.155 4.547.72.311 1.28.497 1.718.636.723.23 1.381.197 1.902.119.585-.088 1.784-.73 2.036-1.435.252-.705.252-1.31.176-1.436-.075-.126-.277-.202-.579-.353z"/></svg>
+    </a>
+
+    <!-- JAVASCRIPT -->
     <script>
         // 1. Lenis Smooth Scroll
-        const lenis = new Lenis({
-            duration: 1.5,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
-            smooth: true,
-        });
-        function raf(time) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
+        const lenis = new Lenis({ duration: 1.5, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smooth: true });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
         requestAnimationFrame(raf);
 
-        // 2. Mobile Menu
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const menuIcon = document.getElementById('menu-icon');
-        let isMobileMenuOpen = false;
-
-        mobileMenuBtn.addEventListener('click', () => {
-            isMobileMenuOpen = !isMobileMenuOpen;
-            if (isMobileMenuOpen) {
-                mobileMenu.classList.remove('opacity-0', 'pointer-events-none');
-                menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12'); 
-            } else {
-                mobileMenu.classList.add('opacity-0', 'pointer-events-none');
-                menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16'); 
-            }
+        // 2. Preloader Split Reveal (Layar Terbelah Kiri-Kanan)
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.body.classList.add('loaded'); // Memicu CSS panel terbelah
+                setTimeout(() => {
+                    document.getElementById('preloader').style.display = 'none';
+                }, 1200); // Hapus preloader dari DOM setelah animasi belah selesai
+            }, 800); 
         });
 
-// 3. Navbar Hide/Show on Scroll (Transparan Penuh)
+        // 3. Carousel Logic (Dengan Tombol Manual & Auto-Play)
+        const slides = document.querySelectorAll('.carousel-slide');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        let currentSlide = 0;
+        let slideInterval;
+
+        function goToSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (index + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+            resetInterval(); // Ulangi timer auto-play saat dipencet manual
+        }
+        function nextSlide() { goToSlide(currentSlide + 1); }
+        function prevSlide() { goToSlide(currentSlide - 1); }
+        
+        btnNext.addEventListener('click', nextSlide);
+        btnPrev.addEventListener('click', prevSlide);
+
+        function resetInterval() {
+            clearInterval(slideInterval);
+            slideInterval = setInterval(nextSlide, 5000); // Ganti tiap 5 detik
+        }
+        resetInterval(); // Mulai auto-play saat pertama kali
+
+        // 4. Navbar Logic & Theme Observer (Ganti warna teks navbar)
         let lastScroll = 0;
         const navbar = document.getElementById('navbar');
-        
         lenis.on('scroll', (e) => {
-            if (isMobileMenuOpen) return; 
             const currentScroll = e.animatedScroll;
-
-            // Sembunyikan navbar saat scroll ke bawah, munculkan saat scroll ke atas
-            if (currentScroll > lastScroll && currentScroll > 100) {
-                navbar.classList.add('nav-hidden');
-            } else if (currentScroll < lastScroll) {
-                navbar.classList.remove('nav-hidden');
-            }
+            if (currentScroll > lastScroll && currentScroll > 100) navbar.classList.add('nav-hidden');
+            else if (currentScroll < lastScroll) navbar.classList.remove('nav-hidden');
             lastScroll = currentScroll;
         });
 
-        // 4. Animasi Reveal (Slide up)
-        const revealObserver = new IntersectionObserver((entries, observer) => {
+        const themeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const theme = entry.target.getAttribute('data-theme');
+                    const navLinks = document.querySelectorAll('.nav-link');
+                    const navLogo = document.getElementById('nav-logo');
+                    const menuBtn = document.getElementById('mobile-menu-btn');
+
+                    if (theme === 'light') {
+                        navLinks.forEach(link => { link.classList.remove('text-white'); link.classList.add('text-brandBrown'); });
+                        navLogo.style.filter = 'brightness(0)'; 
+                        menuBtn.classList.remove('text-white'); menuBtn.classList.add('text-brandBrown');
+                    } else {
+                        navLinks.forEach(link => { link.classList.remove('text-brandBrown'); link.classList.add('text-white'); });
+                        navLogo.style.filter = 'brightness(0) invert(1)'; 
+                        menuBtn.classList.remove('text-brandBrown'); menuBtn.classList.add('text-white');
+                    }
+                }
+            });
+        }, { rootMargin: '-10% 0px -85% 0px' }); 
+        document.querySelectorAll('section, header, footer').forEach(sec => { if (sec.hasAttribute('data-theme')) themeObserver.observe(sec); });
+
+        // 5. Scroll Animations (Square Wipe & Ascend)
+        const animObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
-                    observer.unobserve(entry.target);
+                    // Tambahan: Jangan unobserve wipe agar animasi bisa ter-trigger dari filter logic
                 }
             });
-        }, { rootMargin: '0px', threshold: 0.1 });
+        }, { root: null, rootMargin: '0px', threshold: 0.1 });
         
-        document.querySelectorAll('.reveal-up').forEach(el => revealObserver.observe(el));
+        document.querySelectorAll('.ascend-right, .ascend-left, .square-wipe').forEach(el => animObserver.observe(el));
 
-        // 5. SMART PORTFOLIO FILTER & LOAD MORE LOGIC
+        // 6. SMART PORTFOLIO FILTER & LOAD MORE LOGIC (Dengan Square Wipe Trigger)
         const projectItems = Array.from(document.querySelectorAll('.project-item'));
         const filterBtns = document.querySelectorAll('.filter-btn');
         const loadMoreBtn = document.getElementById('load-more-btn');
         
         let currentFilter = 'all';
-        let itemsToShow = 6; // Jumlah awal yang ditampilkan
-        const itemsToLoad = 6; // Jumlah yang bertambah saat klik Load More
+        let itemsToShow = 6; 
+        const itemsToLoad = 6; 
 
         function renderProjects() {
-            // Saring proyek berdasarkan kategori
-            const filtered = projectItems.filter(item => 
-                currentFilter === 'all' || item.getAttribute('data-category') === currentFilter
-            );
+            const filtered = projectItems.filter(item => currentFilter === 'all' || item.getAttribute('data-category') === currentFilter);
 
-            // Sembunyikan semua proyek terlebih dahulu
             projectItems.forEach(item => {
                 item.style.display = 'none';
-                item.style.opacity = '0';
-                item.style.transform = 'translateY(20px)';
+                item.querySelector('.square-wipe').classList.remove('active'); // Reset wipe
             });
 
-            // Tampilkan proyek yang sesuai filter, dan berikan animasi
             let visibleCount = 0;
             filtered.forEach((item, index) => {
                 if (index < itemsToShow) {
                     item.style.display = 'block';
                     
-                    // Logic Smart Grid: Otomatis atur rasio gambar agar zig-zag tidak rusak!
                     const card = item.querySelector('.project-card');
                     card.classList.remove('aspect-[4/3]', 'aspect-square');
                     
-                    // Pola A-B B-A: Index 0,3,4,7 jadi 4:3. Index 1,2,5,6 jadi 1:1.
+                    // Logic Zig-Zag
                     if (index % 4 === 0 || index % 4 === 3) {
                         card.classList.add('aspect-[4/3]');
                     } else {
                         card.classList.add('aspect-square');
                     }
 
-                    // Efek Fade In perlahan
+                    // Tunda animasi wipe sedikit demi efek cascading
                     setTimeout(() => {
-                        item.style.transition = 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
-                        item.style.opacity = '1';
-                        item.style.transform = 'translateY(0)';
-                    }, 50 * index);
+                        item.querySelector('.square-wipe').classList.add('active');
+                        // Triger animasi teks mobile jika ada
+                        const mobileText = item.querySelector('.ascend-right');
+                        if(mobileText) mobileText.classList.add('active');
+                    }, 100 * index);
                     
                     visibleCount++;
                 }
             });
 
-            // Sembunyikan tombol Load More jika semua proyek sudah tampil
-            if (visibleCount >= filtered.length) {
-                loadMoreBtn.style.display = 'none';
-            } else {
-                loadMoreBtn.style.display = 'inline-flex';
-            }
+            if (visibleCount >= filtered.length) loadMoreBtn.style.display = 'none';
+            else loadMoreBtn.style.display = 'inline-flex';
         }
 
-        // Event Listener untuk Tombol Kategori
         filterBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
-                
-                // Ubah gaya tombol aktif
                 filterBtns.forEach(b => {
                     b.classList.remove('text-brandBrown', 'border-b-2', 'border-brandBrown', 'pb-4', '-mb-[17px]');
                     b.classList.add('text-brandBrown/50', 'pb-4');
@@ -376,26 +503,32 @@
                 btn.classList.remove('text-brandBrown/50');
                 btn.classList.add('text-brandBrown', 'border-b-2', 'border-brandBrown', 'pb-4', '-mb-[17px]');
 
-                // Terapkan filter dan reset tampilan kembali ke 6
                 currentFilter = btn.getAttribute('data-filter');
                 itemsToShow = 6;
                 renderProjects();
-                
-                // Scroll sedikit ke atas agar grid terlihat rapi
                 lenis.scrollTo('#portfolio-filters', { offset: -100, duration: 1 });
             });
         });
 
-        // Event Listener untuk Tombol Load More
         loadMoreBtn.addEventListener('click', (e) => {
             e.preventDefault();
             itemsToShow += itemsToLoad;
             renderProjects();
         });
 
-        // Jalankan saat pertama kali halaman dibuka
-        window.addEventListener('DOMContentLoaded', () => {
-            renderProjects();
+        window.addEventListener('DOMContentLoaded', () => { renderProjects(); });
+
+        // Mobile Menu Button Function
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const iconPath = this.querySelector('path');
+            if(mobileMenu.classList.contains('opacity-0')) {
+                mobileMenu.classList.remove('opacity-0', 'pointer-events-none');
+                iconPath.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+            } else {
+                mobileMenu.classList.add('opacity-0', 'pointer-events-none');
+                iconPath.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+            }
         });
     </script>
 </body>
